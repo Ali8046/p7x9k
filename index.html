@@ -85,7 +85,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 .hero-metric-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:var(--radius);padding:20px 28px;margin:16px auto;max-width:560px;text-align:center;position:relative;z-index:1;backdrop-filter:blur(4px)}
 .hero-metric-num{font-size:56px;font-weight:900;color:var(--green-light);line-height:1}
 .hero-metric-text{font-size:16px;color:rgba(255,255,255,.7);margin-top:4px}
-.hero-us-flag{display:inline-block;font-size:28px;margin-right:8px;vertical-align:middle}
+.hero-us-flag{display:inline-block;font-size:11px;font-weight:900;background:linear-gradient(180deg,#B22234 33%,#fff 33%,#fff 50%,#3C3B6E 50%);color:#fff;padding:2px 6px;border-radius:3px;margin-right:8px;vertical-align:middle;letter-spacing:1px;line-height:1.2;border:1px solid rgba(255,255,255,.3)}
 .welcome-card{background:var(--bg);border:1px solid #eee;border-radius:var(--radius);padding:28px 32px;margin-top:24px;text-align:left;max-width:560px;margin-left:auto;margin-right:auto}
 .welcome-card h3{font-size:20px;font-weight:700;color:var(--dark);margin-bottom:4px}
 .welcome-card .wc-sub{font-size:14px;color:var(--t2);margin-bottom:20px}
@@ -174,7 +174,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 .dot-empty{background:#eee;border-color:#ddd}
 .sc-score{display:block;font-size:11px;font-weight:800;margin-top:3px}
 .sc-score-hive{color:var(--green)}.sc-score-alpaca{color:#B8860B}.sc-score-ibkr{color:var(--red)}.sc-score-gtn{color:var(--cobalt)}
-.sc-totals{display:flex;justify-content:space-around;text-align:center;padding:14px 0;border-top:3px solid var(--dark);margin-top:4px;font-weight:800;min-width:600px}
+.sc-totals{display:flex;justify-content:space-around;text-align:center;padding:14px 0;border-top:3px solid var(--dark);margin-top:4px;font-weight:800;min-width:600px;gap:8px}
 .sc-totals div{font-size:13px}
 .sc-totals .t-val{font-size:28px;display:block;line-height:1.1}
 .t-hive{color:var(--green)}.t-alpaca{color:#B8860B}.t-ibkr{color:var(--red)}.t-gtn{color:var(--cobalt)}
@@ -195,7 +195,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 /* ==========================================
    8. STEP 4: ECONOMICS
    ========================================== */
-.rev-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0}
+.rev-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:16px 0}
 .rev-card{background:#fff;border:1.5px solid #eee;border-radius:var(--radius);padding:16px;transition:all .2s;position:relative;overflow:hidden}
 .rev-card:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(39,174,96,.1)}
 .rev-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--green)}
@@ -283,8 +283,8 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 .nudge-info{background:#EBF5FB;border-left:3px solid var(--info);color:var(--navy)}
 .nudge-warn{background:#FFF8E7;border-left:3px solid var(--warn);color:var(--navy)}
 .nudge-good{background:#F0FFF4;border-left:3px solid var(--green);color:var(--dark)}
-.cat-progress{height:3px;background:#eee;border-radius:2px;margin-top:4px;overflow:hidden;flex:1;min-width:60px}
-.cat-progress-fill{height:100%;background:var(--green);border-radius:2px;transition:width .3s ease}
+.cat-progress{display:inline-block;height:3px;background:#eee;border-radius:2px;vertical-align:middle;overflow:hidden;flex:1;min-width:60px}
+.cat-progress-fill{display:block;height:100%;background:var(--green);border-radius:2px;transition:width .3s ease}
 .cat-count{font-size:11px;color:var(--t2);display:flex;align-items:center;gap:8px}
 .cap-row.auto-set{opacity:.6;pointer-events:none}
 .cap-row.auto-set .partner-select{background:#f5f5f5}
@@ -293,6 +293,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 .proof-card .proof-quote{font-size:15px;font-style:italic;color:var(--dark);margin-bottom:8px;line-height:1.5}
 .proof-card .proof-attr{font-size:12px;color:var(--t2);font-weight:600}
 .proof-metric{display:inline-block;background:var(--green);color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin:0 3px}
+.pillar-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .b2c-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);justify-content:center;align-items:center}
 .b2c-modal.active{display:flex}
 .b2c-box{background:#fff;border-radius:12px;max-width:480px;width:90%;padding:32px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
@@ -325,16 +326,15 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
   .step{padding:20px 16px 40px}
   .hero-splash{padding:32px 16px 28px;margin:-20px -16px 24px}
   .hero-logo{width:140px}
-  .hero-brand{font-size:42px;letter-spacing:8px}
-  .hero-headline{font-size:17px}
   .hero-brand{font-size:36px;letter-spacing:6px}
+  .hero-headline{font-size:17px}
   .hero-metric-num{font-size:36px}
   .step-hdr h2{font-size:24px}
   .welcome-card{padding:20px}
   .cap-row{grid-template-columns:1fr;gap:4px}
   .match-cell{flex-direction:row;justify-content:flex-start;gap:6px}
   .partner-select{font-size:14px;padding:10px 12px;min-height:44px}
-  .rev-cards{grid-template-columns:1fr}
+  .rev-cards{grid-template-columns:1fr 1fr}
   .shariah-grid{grid-template-columns:1fr}
   .absorbs-split{grid-template-columns:1fr}
   .summary-grid{grid-template-columns:1fr 1fr}
@@ -345,6 +345,9 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
   .s-lbl{font-size:8px}
   .fpsl-grid{grid-template-columns:1fr}
   .btn-primary,.btn-back,.btn-dark,.btn-gold{min-height:48px;font-size:14px}
+  .pillar-grid{grid-template-columns:1fr!important}
+  .email-verify-row{flex-direction:column;align-items:stretch}
+  .email-verify-row input{width:100%}
 }
 </style>
 </head>
@@ -379,7 +382,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
       <polygon points="120.1,107 120.1,129 101,140 81.9,129 81.9,107 101,96" fill="#3DDC84"/>
     </svg>
     <div class="hero-brand">HIVE</div>
-    <div class="hero-headline"><span class="hero-us-flag">&#127482;&#127480;</span> Your Gateway to <b>US Market Access</b></div>
+    <div class="hero-headline"><span class="hero-us-flag">US</span> Your Gateway to <b>US Market Access</b></div>
     <div class="hero-powered">Powered by Awaed</div>
     <div class="hero-tagline">Partner Configurator</div>
     <hr class="gold-rule">
@@ -393,11 +396,11 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
     </div>
     <div class="hero-metric-box">
       <div class="hero-metric-num">56</div>
-      <div class="hero-metric-text"><span class="hero-us-flag" style="font-size:20px">&#127482;&#127480;</span> capabilities for US equities, options, and Shariah-compliant trading &mdash; more than any platform in the GCC</div>
+      <div class="hero-metric-text"><span class="hero-us-flag">US</span> capabilities for US equities, options, and Shariah-compliant trading &mdash; more than any platform in the GCC</div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px auto;max-width:600px;position:relative;z-index:1">
+    <div class="pillar-grid" style="margin:16px auto;max-width:600px;position:relative;z-index:1">
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:14px 12px;text-align:center">
-        <div style="font-size:22px;margin-bottom:4px">&#128274;</div>
+        <div style="font-size:22px;margin-bottom:4px">&#9670;</div>
         <div style="font-size:11px;font-weight:700;color:#3DDC84;text-transform:uppercase;letter-spacing:.5px">Your Brand</div>
         <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">Your clients never see Hive</div>
       </div>
@@ -407,7 +410,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
         <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">Separate from Awaed&rsquo;s operations</div>
       </div>
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:14px 12px;text-align:center">
-        <div style="font-size:22px;margin-bottom:4px">&#128272;</div>
+        <div style="font-size:22px;margin-bottom:4px">&#9678;</div>
         <div style="font-size:11px;font-weight:700;color:#3DDC84;text-transform:uppercase;letter-spacing:.5px">Your Control</div>
         <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">Build on our IP, own your destiny</div>
       </div>
@@ -526,7 +529,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
     <div class="ms-item ms-ready"><span class="ms-num" id="msReady">0</span>Ready</div>
     <div class="ms-item ms-prog"><span class="ms-num" id="msProg">0</span>In Progress</div>
     <div class="ms-item ms-gap"><span class="ms-num" id="msGap">0</span>Gaps</div>
-    <div class="ms-item ms-pend"><span class="ms-num" id="msPend">49</span>Pending</div>
+    <div class="ms-item ms-pend"><span class="ms-num" id="msPend">0</span>Pending</div>
     <div class="score-ring-wrap">
       <svg class="score-ring" viewBox="0 0 64 64">
         <circle cx="32" cy="32" r="28" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="5"/>
@@ -598,10 +601,11 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
       <tbody id="scArea"></tbody>
     </table>
     <div class="sc-totals">
-      <div class="t-hive">Hive<span class="t-val">50</span>/50</div>
-      <div class="t-alpaca">Alpaca<span class="t-val">33</span>/50</div>
-      <div class="t-ibkr">IBKR<span class="t-val">29</span>/50</div>
-      <div class="t-gtn">GTN<span class="t-val">35</span>/50</div>
+      <div style="width:160px;text-align:left;font-size:14px;color:var(--dark)">Total</div>
+      <div class="t-hive" style="flex:1">Hive<span class="t-val">50</span>/50</div>
+      <div class="t-alpaca" style="flex:1">Alpaca<span class="t-val">33</span>/50</div>
+      <div class="t-ibkr" style="flex:1">IBKR<span class="t-val">29</span>/50</div>
+      <div class="t-gtn" style="flex:1">GTN<span class="t-val">35</span>/50</div>
     </div>
   </div>
 
@@ -669,43 +673,43 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 
   <div class="rev-cards">
     <div class="rev-card">
-      <div class="rc-icon">&#128200;</div>
+      <div class="rc-icon">&#9650;</div>
       <h4>PFOF (Payment for Order Flow)</h4>
       <p>Rebates from market makers on every equity and options order routed.</p>
       <div class="rc-metric">~$0.003/share equities &middot; ~$0.45/contract options</div>
     </div>
     <div class="rev-card">
-      <div class="rc-icon">&#128176;</div>
+      <div class="rc-icon">&#9733;</div>
       <h4>Net Interest Income (NII)</h4>
       <p>Spread earned on uninvested client cash held in FDIC sweep accounts.</p>
       <div class="rc-metric">Spread on Fed Funds rate &middot; scales with AUM</div>
     </div>
     <div class="rev-card">
-      <div class="rc-icon">&#128279;</div>
+      <div class="rc-icon">&#9741;</div>
       <h4>Securities Lending (FPSL)</h4>
       <p>Income from lending fully-paid client securities to borrowers. Shariah-compliant structure.</p>
       <div class="rc-metric">Revenue share on lending fees &middot; passive income</div>
     </div>
     <div class="rev-card">
-      <div class="rc-icon">&#128202;</div>
+      <div class="rc-icon">&#9670;</div>
       <h4>Margin Spread</h4>
       <p>Spread above base rate on Shariah-compliant margin lending (Murabaha).</p>
       <div class="rc-metric">Spread on margin balances &middot; Shariah-compliant</div>
     </div>
     <div class="rev-card">
-      <div class="rc-icon">&#128177;</div>
+      <div class="rc-icon">&#9683;</div>
       <h4>FX Markup</h4>
       <p>Markup on currency conversion for international deposits and withdrawals.</p>
       <div class="rc-metric">Markup on conversion volume</div>
     </div>
     <div class="rev-card">
-      <div class="rc-icon">&#11088;</div>
-      <h4>Subscription & Premium</h4>
+      <div class="rc-icon">&#9734;</div>
+      <h4>Subscription &amp; Premium</h4>
       <p>Monthly subscription for premium features: advanced analytics, real-time data, research.</p>
       <div class="rc-metric">Per-account monthly recurring revenue</div>
     </div>
     <div class="rev-card">
-      <div class="rc-icon">&#127992;</div>
+      <div class="rc-icon">&#9878;</div>
       <h4>White-Label Licensing</h4>
       <p>Platform fee for white-label mobile app, web app, and admin portal access.</p>
       <div class="rc-metric">Platform fee + per-account scaling</div>
@@ -714,7 +718,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 
   <!-- FPSL SPOTLIGHT -->
   <div class="fpsl-box">
-    <h3>&#128279; FPSL Spotlight &mdash; The Hidden Revenue Engine</h3>
+    <h3>&#9741; FPSL Spotlight &mdash; The Hidden Revenue Engine</h3>
     <p style="font-size:13px;margin-bottom:10px">Fully Paid Securities Lending generates passive income from client holdings. Hive is the only platform with a <b>Shariah-compliant FPSL structure</b> (Qard Hasan + Ju'alah).</p>
     <div class="fpsl-grid">
       <div class="fpsl-item"><b>Structure</b><span>Qard Hasan + Ju&rsquo;alah</span></div>
@@ -767,7 +771,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
         <div style="font-size:13px;color:rgba(255,255,255,.6)">Hive runs on separate rails from Awaed and every other partner</div>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px">
+    <div class="pillar-grid" style="margin-top:14px">
       <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,.08)">
         <div style="font-size:11px;font-weight:700;color:#3DDC84;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Isolated Operations</div>
         <div style="font-size:11px;color:rgba(255,255,255,.5)">Your client data, trading activity, and risk never mixes with anyone else&rsquo;s</div>
@@ -840,15 +844,15 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
   </div>
 
   <div class="summary-hero">
-    <div class="summary-score-ring">
+    <div class="summary-score-ring" style="position:relative">
       <svg viewBox="0 0 120 120" style="width:100%;height:100%">
         <circle cx="60" cy="60" r="52" fill="none" stroke="#eee" stroke-width="8"/>
         <circle cx="60" cy="60" r="52" fill="none" stroke="var(--green)" stroke-width="8"
           id="summaryRing" stroke-dasharray="326.73" stroke-dashoffset="326.73"
           stroke-linecap="round" transform="rotate(-90 60 60)" style="transition:stroke-dashoffset 1s ease"/>
       </svg>
+      <div class="summary-pct" id="summaryPct" style="color:var(--green);position:absolute;inset:0;display:flex;align-items:center;justify-content:center">0%</div>
     </div>
-    <div class="summary-pct" id="summaryPct" style="color:var(--green);margin-top:-76px;position:relative">0%</div>
     <div class="summary-label">Platform Fit Score</div>
   </div>
 
@@ -864,9 +868,9 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
   <div id="sendStatus" style="display:none;text-align:center;padding:12px 16px;border-radius:var(--radius);margin-bottom:16px;font-size:13px;font-weight:600"></div>
 
   <div class="summary-actions">
-    <button class="btn-primary" onclick="window.print()">&#9113; Print as PDF</button>
-    <button class="btn-dark" onclick="copySummaryText()">&#128203; Copy Summary</button>
-    <button class="btn-gold" id="btnSchedule" onclick="scheduleCall()">&#128222; Schedule a Call</button>
+    <button class="btn-primary" onclick="window.print()">&#9998; Print as PDF</button>
+    <button class="btn-dark" onclick="copySummaryText()">&#9776; Copy Summary</button>
+    <button class="btn-gold" id="btnSchedule" onclick="scheduleCall()">&#9742; Schedule a Call</button>
   </div>
 
   <div class="proof-card" style="max-width:100%">
@@ -888,7 +892,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
   </div>
 
   <div class="contact-card">
-    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--green);margin-bottom:6px">&#127482;&#127480; US Market Access Platform &middot; Independent Infrastructure</div>
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--green);margin-bottom:6px"><span class="hero-us-flag" style="font-size:9px;padding:1px 4px;background:linear-gradient(180deg,#B22234 33%,#fff 33%,#fff 50%,#3C3B6E 50%)">US</span> Market Access Platform &middot; Independent Infrastructure</div>
     <h3 style="font-size:22px">Hive &mdash; <span style="color:var(--green)">Powered by Awaed</span></h3>
     <p>Institutional Solutions Division &mdash; Build on our IP, own your destiny</p>
     <p style="font-size:12px;color:var(--t2);margin-top:6px">AlUrubah Road 2163, AlMathar Ash Shamali 12334, Riyadh, Saudi Arabia<br>
@@ -910,7 +914,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 <!-- B2C WARNING MODAL -->
 <div class="b2c-modal" id="b2cModal">
   <div class="b2c-box">
-    <div class="b2c-icon">&#127970;</div>
+    <div class="b2c-icon">&#9881;</div>
     <h3>This is a B2B Partnership Platform</h3>
     <p>The Hive Partner Configurator is designed for <b>licensed financial institutions, banks, and capital market companies</b> looking to offer US market access to their clients.</p>
     <p>If you are an <b>individual investor</b> looking to trade US stocks, please visit your broker directly. Hive does not offer direct retail accounts.</p>
@@ -1512,7 +1516,7 @@ function renderCategories() {
     div.innerHTML = '<div class="cat-hdr" onclick="toggleCat(' + ci + ')">' +
       '<span class="cat-icon" style="background:' + cat.icon + '">' + (ci + 1) + '</span>' +
       '<span class="cat-name">' + cat.cat + '</span>' +
-      '<span class="cat-count"><span id="catSel_' + ci + '">0</span>/' + count + ' <div class="cat-progress"><div class="cat-progress-fill" id="catProg_' + ci + '" style="width:0%"></div></div></span>' +
+      '<span class="cat-count"><span id="catSel_' + ci + '">0</span>/' + count + ' <span class="cat-progress"><span class="cat-progress-fill" id="catProg_' + ci + '" style="width:0%"></span></span></span>' +
       '<span class="cat-arrow">&#9660;</span></div>' +
       '<div class="cat-body" id="catBody_' + ci + '"></div>';
     container.appendChild(div);
