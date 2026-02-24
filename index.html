@@ -80,6 +80,11 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 .trust-bar{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;padding:8px 16px;margin:4px 0 8px;position:relative;z-index:1}
 .trust-badge{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.7);padding:3px 8px;border:1px solid rgba(255,255,255,.2);border-radius:3px;white-space:nowrap}
 .hero-us-flag{display:inline-block;font-size:10px;font-weight:900;background:var(--cobalt);color:#fff;padding:2px 7px;border-radius:3px;margin-right:6px;vertical-align:middle;letter-spacing:1px;line-height:1.3}
+.us-flag-hero{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#1B2A4A 0%,#273979 100%);color:#fff;padding:8px 18px;border-radius:6px;margin:6px auto 2px;font-size:14px;font-weight:800;letter-spacing:1px;position:relative;z-index:1;border:1px solid rgba(255,255,255,.15)}
+.us-flag-hero .flag-stars{color:#FFD700;font-size:11px;letter-spacing:2px}
+.us-flag-hero .flag-stripes{display:inline-block;width:28px;height:18px;border-radius:2px;background:repeating-linear-gradient(180deg,#B22234 0px,#B22234 2px,#fff 2px,#fff 4px);position:relative;overflow:hidden;vertical-align:middle;flex-shrink:0}
+.us-flag-hero .flag-stripes::before{content:'';position:absolute;top:0;left:0;width:12px;height:10px;background:#3C3B6E}
+.us-flag-hero .flag-stripes::after{content:'\2605\2605\2605';position:absolute;top:-1px;left:1px;font-size:4px;color:#fff;letter-spacing:1px;line-height:5px;width:10px;word-spacing:0}
 .welcome-card{background:var(--bg);border:1px solid #eee;border-radius:var(--radius);padding:24px 28px;margin-top:16px;text-align:left;max-width:560px;margin-left:auto;margin-right:auto}
 .welcome-card h3{font-size:20px;font-weight:700;color:var(--dark);margin-bottom:4px}
 .welcome-card .wc-sub{font-size:14px;color:var(--t2);margin-bottom:20px}
@@ -327,6 +332,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
   .hero-logo{width:80px}
   .hero-brand{font-size:32px;letter-spacing:4px}
   .hero-headline{font-size:15px}
+  .us-flag-hero{font-size:12px;padding:6px 14px}
   .step-hdr h2{font-size:24px}
   .welcome-card{padding:20px}
   .cap-row{grid-template-columns:1fr;gap:4px}
@@ -380,7 +386,8 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
       <polygon points="120.1,107 120.1,129 101,140 81.9,129 81.9,107 101,96" fill="#3DDC84"/>
     </svg>
     <div class="hero-brand">HIVE</div>
-    <div class="hero-headline"><b>Shariah-First</b> <span class="hero-us-flag">US</span> Market Access Platform</div>
+    <div class="us-flag-hero"><span class="flag-stripes"></span> US MARKET ACCESS</div>
+    <div class="hero-headline"><b>Shariah-First</b> Trading Platform</div>
     <div class="hero-powered">Powered by Awaed</div>
     <div class="trust-bar">
       <span class="trust-badge">Shariah-First</span>
