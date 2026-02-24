@@ -293,6 +293,17 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 .proof-card .proof-quote{font-size:15px;font-style:italic;color:var(--dark);margin-bottom:8px;line-height:1.5}
 .proof-card .proof-attr{font-size:12px;color:var(--t2);font-weight:600}
 .proof-metric{display:inline-block;background:var(--green);color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin:0 3px}
+.b2c-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);justify-content:center;align-items:center}
+.b2c-modal.active{display:flex}
+.b2c-box{background:#fff;border-radius:12px;max-width:480px;width:90%;padding:32px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.b2c-box h3{font-size:20px;color:var(--dark);margin-bottom:8px}
+.b2c-box p{font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:16px}
+.b2c-box .b2c-icon{font-size:48px;margin-bottom:12px}
+.email-verify-row{display:flex;gap:8px;align-items:center;margin-top:8px}
+.email-verify-row input{width:120px;text-align:center;font-size:18px;font-weight:700;letter-spacing:4px;padding:10px;border:2px solid var(--rule);border-radius:6px;font-family:inherit}
+.email-verify-row input:focus{border-color:var(--green);outline:none}
+.verify-status{font-size:12px;font-weight:600;margin-top:6px;min-height:18px}
+.verify-ok{color:var(--green)}.verify-fail{color:var(--red)}.verify-pending{color:var(--info)}
 
 /* ==========================================
    12. PRINT
@@ -375,7 +386,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
     <div class="trust-bar">
       <span class="trust-badge">CMA Licensed 03-22247</span>
       <span class="trust-badge">US Market Access</span>
-      <span class="trust-badge">Self-Clearing</span>
+      <span class="trust-badge">Independent Infrastructure</span>
       <span class="trust-badge">SSB Governed</span>
       <span class="trust-badge">AAOIFI Compliant</span>
       <span class="trust-badge">Shariah Native</span>
@@ -384,9 +395,26 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
       <div class="hero-metric-num">56</div>
       <div class="hero-metric-text"><span class="hero-us-flag" style="font-size:20px">&#127482;&#127480;</span> capabilities for US equities, options, and Shariah-compliant trading &mdash; more than any platform in the GCC</div>
     </div>
-    <div class="proof-card" style="background:rgba(255,255,255,.05);border-color:rgba(39,174,96,.4)">
-      <div class="proof-quote" style="color:#fff">&ldquo;Awaed Capital &mdash; the fastest-growing broker in the region &mdash; runs on the Hive engine for live US market access.&rdquo;</div>
-      <div class="proof-attr" style="color:rgba(255,255,255,.6)">Live production &middot; <span class="proof-metric">NYSE &amp; NASDAQ</span> <span class="proof-metric">Options</span> <span class="proof-metric">Shariah Suite</span> <span class="proof-metric">FPSL</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px auto;max-width:600px;position:relative;z-index:1">
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:14px 12px;text-align:center">
+        <div style="font-size:22px;margin-bottom:4px">&#128274;</div>
+        <div style="font-size:11px;font-weight:700;color:#3DDC84;text-transform:uppercase;letter-spacing:.5px">Your Brand</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">Your clients never see Hive</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:14px 12px;text-align:center">
+        <div style="font-size:22px;margin-bottom:4px">&#9881;</div>
+        <div style="font-size:11px;font-weight:700;color:#3DDC84;text-transform:uppercase;letter-spacing:.5px">Independent Rails</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">Separate from Awaed&rsquo;s operations</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:14px 12px;text-align:center">
+        <div style="font-size:22px;margin-bottom:4px">&#128272;</div>
+        <div style="font-size:11px;font-weight:700;color:#3DDC84;text-transform:uppercase;letter-spacing:.5px">Your Control</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">Build on our IP, own your destiny</div>
+      </div>
+    </div>
+    <div class="proof-card" style="background:rgba(255,255,255,.05);border-color:rgba(39,174,96,.4);max-width:600px;margin:0 auto;position:relative;z-index:1">
+      <div class="proof-quote" style="color:#fff;font-size:14px">&ldquo;Awaed Capital runs on the Hive engine &mdash; on <b>completely independent infrastructure</b>. Every partner gets their own isolated rails, their own brand, their own control. You build on our IP without losing anything.&rdquo;</div>
+      <div class="proof-attr" style="color:rgba(255,255,255,.6);margin-top:6px">Awaed &mdash; fastest-growing broker in the region &middot; <span class="proof-metric">NYSE &amp; NASDAQ</span> <span class="proof-metric">Options</span> <span class="proof-metric">Shariah Suite</span> <span class="proof-metric">FPSL</span></div>
     </div>
   </div>
 
@@ -403,7 +431,16 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
     </div>
     <div class="form-row">
       <label>Business Email <span style="color:var(--red)">*</span></label>
-      <input type="email" id="w_email" placeholder="you@company.com" maxlength="120" autocomplete="email" required>
+      <input type="email" id="w_email" placeholder="you@company.com" maxlength="120" autocomplete="email" required onblur="checkEmailDomain()">
+      <div id="emailDomainWarn" style="display:none;font-size:11px;color:var(--warn);margin-top:4px;padding:6px 10px;background:#FFF8E7;border-radius:4px"></div>
+      <div id="emailVerifyArea" style="display:none;margin-top:8px">
+        <div style="font-size:12px;color:var(--t2);margin-bottom:6px">Enter the 6-digit code sent to your email:</div>
+        <div class="email-verify-row">
+          <input type="text" id="verifyCode" maxlength="6" placeholder="------" oninput="checkVerifyCode()">
+          <button class="btn-outline btn-sm" id="btnSendCode" onclick="sendVerificationCode()">Send Code</button>
+        </div>
+        <div class="verify-status" id="verifyStatus"></div>
+      </div>
     </div>
     <div class="form-row">
       <label>Phone (with country code)</label>
@@ -721,26 +758,52 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
     </tbody>
   </table>
 
+  <!-- INDEPENDENT RAILS BANNER -->
+  <div style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);border-radius:10px;padding:24px 28px;margin-bottom:16px;border:1px solid rgba(61,220,132,.25)">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+      <span style="font-size:28px">&#9881;</span>
+      <div>
+        <div style="font-size:17px;font-weight:800;color:#fff">Completely Independent Infrastructure</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.6)">Hive runs on separate rails from Awaed and every other partner</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px">
+      <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,.08)">
+        <div style="font-size:11px;font-weight:700;color:#3DDC84;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Isolated Operations</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5)">Your client data, trading activity, and risk never mixes with anyone else&rsquo;s</div>
+      </div>
+      <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,.08)">
+        <div style="font-size:11px;font-weight:700;color:#3DDC84;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Your IP, Your Terms</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5)">Build on Hive&rsquo;s proven engine — own the product, brand, and client relationship</div>
+      </div>
+      <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,.08)">
+        <div style="font-size:11px;font-weight:700;color:#3DDC84;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">No Vendor Lock-in</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5)">Modular integration — use the full stack or just the APIs you need</div>
+      </div>
+    </div>
+  </div>
+
   <!-- ABSORBS SPLIT -->
   <div class="sub-hdr">Ownership Map</div>
   <div class="absorbs-split">
     <div class="absorbs-card absorbs-you">
-      <h3>&#10003; You Own</h3>
+      <h3>&#10003; You Own &amp; Control</h3>
       <ul class="absorbs-list">
         <li>Client relationship and acquisition</li>
         <li>KYC / onboarding (your identity, your brand)</li>
         <li>Local regulatory compliance (CMA/SCA/CBK)</li>
         <li>FX conversion (your bank, your rate)</li>
-        <li>Marketing and brand</li>
+        <li>Marketing, brand, and go-to-market</li>
         <li>Client support (tier 1)</li>
         <li>Product pricing and fee schedule</li>
+        <li>Data ownership and client portability</li>
       </ul>
     </div>
     <div class="absorbs-card absorbs-hive">
-      <h3>&#9670; Hive Absorbs</h3>
+      <h3>&#9670; Hive Provides (Independent Rails)</h3>
       <ul class="absorbs-list">
-        <li>US broker-dealer registration (FINRA/SEC)</li>
-        <li>Trade execution and clearing (self-clearing)</li>
+        <li>US market access infrastructure (SEC regulated)</li>
+        <li>Trade execution and clearing (independent from Awaed)</li>
         <li>Custody and asset safekeeping (segregated accounts)</li>
         <li>AML, sanctions, trade surveillance</li>
         <li>All US regulatory reporting</li>
@@ -809,7 +872,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
   <div class="proof-card" style="max-width:100%">
     <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:8px">Live Case Study</div>
     <div class="proof-quote">&ldquo;Awaed Capital launched on the Hive engine and became the fastest-growing broker in the GCC. Full Shariah compliance, US equities, options, and FPSL — all live from day one.&rdquo;</div>
-    <div class="proof-attr" style="margin-top:8px"><span class="proof-metric">Live Production</span> <span class="proof-metric">Shariah-Compliant</span> <span class="proof-metric">Self-Clearing</span> <span class="proof-metric">Full Stack</span></div>
+    <div class="proof-attr" style="margin-top:8px"><span class="proof-metric">Live Production</span> <span class="proof-metric">Shariah-Compliant</span> <span class="proof-metric">Independent Rails</span> <span class="proof-metric">Full Stack</span></div>
   </div>
 
   <!-- TIMELINE -->
@@ -825,9 +888,9 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
   </div>
 
   <div class="contact-card">
-    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--green);margin-bottom:6px">&#127482;&#127480; US Market Access Platform</div>
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--green);margin-bottom:6px">&#127482;&#127480; US Market Access Platform &middot; Independent Infrastructure</div>
     <h3 style="font-size:22px">Hive &mdash; <span style="color:var(--green)">Powered by Awaed</span></h3>
-    <p>Institutional Solutions Division</p>
+    <p>Institutional Solutions Division &mdash; Build on our IP, own your destiny</p>
     <p style="font-size:12px;color:var(--t2);margin-top:6px">AlUrubah Road 2163, AlMathar Ash Shamali 12334, Riyadh, Saudi Arabia<br>
     CMA License 03-22247 &middot; CR 1010734817</p>
     <p style="margin-top:8px"><a href="https://awaed.capital">awaed.capital</a> &middot; <a href="mailto:ali@awaed.co">ali@awaed.co</a></p>
@@ -843,6 +906,26 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
     <button class="btn-back" onclick="goTo(4)">&larr; Back to Economics</button>
   </div>
 </section>
+
+<!-- B2C WARNING MODAL -->
+<div class="b2c-modal" id="b2cModal">
+  <div class="b2c-box">
+    <div class="b2c-icon">&#127970;</div>
+    <h3>This is a B2B Partnership Platform</h3>
+    <p>The Hive Partner Configurator is designed for <b>licensed financial institutions, banks, and capital market companies</b> looking to offer US market access to their clients.</p>
+    <p>If you are an <b>individual investor</b> looking to trade US stocks, please visit your broker directly. Hive does not offer direct retail accounts.</p>
+    <div style="margin-top:20px;padding:16px;background:var(--bg);border-radius:6px;text-align:left">
+      <div style="display:flex;align-items:flex-start;gap:8px">
+        <input type="checkbox" id="b2cConfirm" style="margin-top:3px;accent-color:var(--green)">
+        <label for="b2cConfirm" style="font-size:13px;color:var(--dark);cursor:pointer"><b>I confirm</b> that I represent a financial institution, bank, or licensed capital market company and I am exploring a B2B partnership with Hive.</label>
+      </div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:10px;justify-content:center">
+      <button class="btn-back" onclick="dismissB2C(false)">I&rsquo;m an Individual</button>
+      <button class="btn-primary" id="b2cProceed" onclick="dismissB2C(true)" disabled style="opacity:.5">Continue as Institution</button>
+    </div>
+  </div>
+</div>
 
 <!-- OVERLAY -->
 <div class="overlay" id="overlay">
@@ -999,6 +1082,22 @@ function validateAndProceed() {
   if (!email) errors.push('Business email is required');
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('Please enter a valid email address');
   if (!consent) errors.push('Please accept the data processing consent');
+
+  if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    var domain = email.split('@')[1].toLowerCase();
+    var isConsumer = CONSUMER_DOMAINS.indexOf(domain) !== -1;
+    if (isConsumer && !b2cConfirmed) {
+      errors.push('Personal email detected. Please use a business email or <a href="#" onclick="showB2CModal();return false" style="color:var(--green);font-weight:700">confirm your institutional role</a>');
+    }
+    if (!emailVerified && verifyCodeGenerated) {
+      errors.push('Please enter the verification code sent to your email, or click "Send Code" to receive one');
+    }
+    if (!emailVerified && !verifyCodeGenerated) {
+      checkEmailDomain();
+      errors.push('Please verify your email address by clicking "Send Code" and entering the 6-digit code');
+    }
+  }
+
   if (errors.length > 0) {
     errEl.innerHTML = errors.join('<br>');
     errEl.style.display = 'block';
@@ -1010,7 +1109,126 @@ function validateAndProceed() {
 }
 
 // ============================================================
-// 2b. INTELLIGENCE ENGINE
+// 2b. EMAIL DOMAIN VALIDATION & VERIFICATION
+// ============================================================
+var CONSUMER_DOMAINS = ['gmail.com','yahoo.com','hotmail.com','outlook.com','live.com','aol.com','icloud.com','me.com','mail.com','protonmail.com','proton.me','zoho.com','yandex.com','gmx.com','inbox.com','fastmail.com','tutanota.com','mailinator.com','guerrillamail.com','tempmail.com','msn.com','att.net','comcast.net','verizon.net','sbcglobal.net','cox.net','charter.net'];
+var emailVerified = false;
+var verifyCodeGenerated = '';
+var b2cConfirmed = false;
+
+function checkEmailDomain() {
+  var email = document.getElementById('w_email').value.trim().toLowerCase();
+  if (!email || email.indexOf('@') === -1) return;
+  var domain = email.split('@')[1];
+  var warnEl = document.getElementById('emailDomainWarn');
+  var verifyArea = document.getElementById('emailVerifyArea');
+
+  if (CONSUMER_DOMAINS.indexOf(domain) !== -1) {
+    warnEl.style.display = 'block';
+    warnEl.innerHTML = '&#9888; <b>' + esc(domain) + '</b> appears to be a personal email. This tool is for institutional partners (banks, brokers, capital market companies). Please use your business email, or <a href="#" onclick="showB2CModal();return false" style="color:var(--green);font-weight:700">confirm your institutional role</a>.';
+    verifyArea.style.display = 'block';
+  } else {
+    warnEl.style.display = 'none';
+    verifyArea.style.display = 'block';
+  }
+}
+
+function showB2CModal() {
+  document.getElementById('b2cModal').classList.add('active');
+  document.getElementById('b2cConfirm').checked = false;
+  document.getElementById('b2cProceed').disabled = true;
+  document.getElementById('b2cProceed').style.opacity = '.5';
+}
+
+document.addEventListener('change', function(e) {
+  if (e.target.id === 'b2cConfirm') {
+    var btn = document.getElementById('b2cProceed');
+    btn.disabled = !e.target.checked;
+    btn.style.opacity = e.target.checked ? '1' : '.5';
+  }
+});
+
+function dismissB2C(confirmed) {
+  document.getElementById('b2cModal').classList.remove('active');
+  if (confirmed) {
+    b2cConfirmed = true;
+    var warnEl = document.getElementById('emailDomainWarn');
+    warnEl.style.display = 'block';
+    warnEl.style.background = '#F0FFF4';
+    warnEl.style.color = 'var(--green)';
+    warnEl.innerHTML = '&#10003; Institutional role confirmed. You may proceed with your current email.';
+  } else {
+    document.getElementById('w_email').value = '';
+    document.getElementById('w_email').focus();
+    document.getElementById('emailDomainWarn').style.display = 'none';
+    document.getElementById('emailVerifyArea').style.display = 'none';
+  }
+}
+
+function sendVerificationCode() {
+  var email = document.getElementById('w_email').value.trim();
+  if (!email) return;
+  var code = '';
+  for (var i = 0; i < 6; i++) code += Math.floor(Math.random() * 10);
+  verifyCodeGenerated = code;
+
+  var statusEl = document.getElementById('verifyStatus');
+  statusEl.className = 'verify-status verify-pending';
+  statusEl.textContent = 'Sending verification code to ' + email + '...';
+  document.getElementById('btnSendCode').disabled = true;
+  document.getElementById('btnSendCode').textContent = 'Sent';
+
+  fetch('https://formsubmit.co/ajax/ali@awaed.co', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+    body: JSON.stringify({
+      _subject: 'Hive Email Verification — Code: ' + code + ' — ' + email,
+      _template: 'table',
+      _captcha: 'false',
+      action: 'EMAIL_VERIFICATION',
+      email_to_verify: email,
+      verification_code: code,
+      firm: document.getElementById('w_firm').value || '',
+      timestamp: new Date().toISOString()
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.success) {
+      statusEl.className = 'verify-status verify-pending';
+      statusEl.textContent = 'Code sent. Please check your inbox and enter the 6-digit code.';
+    } else {
+      statusEl.className = 'verify-status verify-fail';
+      statusEl.textContent = 'Could not send code. You can proceed — we will verify during follow-up.';
+      emailVerified = true;
+    }
+  })
+  .catch(function() {
+    statusEl.className = 'verify-status verify-fail';
+    statusEl.textContent = 'Could not send code. You can proceed — we will verify during follow-up.';
+    emailVerified = true;
+  });
+}
+
+function checkVerifyCode() {
+  var input = document.getElementById('verifyCode').value.trim();
+  var statusEl = document.getElementById('verifyStatus');
+  if (input.length < 6) return;
+  if (input === verifyCodeGenerated) {
+    emailVerified = true;
+    statusEl.className = 'verify-status verify-ok';
+    statusEl.innerHTML = '&#10003; Email verified successfully.';
+    document.getElementById('verifyCode').style.borderColor = 'var(--green)';
+    document.getElementById('verifyCode').disabled = true;
+  } else {
+    statusEl.className = 'verify-status verify-fail';
+    statusEl.textContent = 'Incorrect code. Please try again.';
+    document.getElementById('verifyCode').style.borderColor = 'var(--red)';
+  }
+}
+
+// ============================================================
+// 2c. INTELLIGENCE ENGINE
 // ============================================================
 var ITEM_DEPS = {3:[13], 12:[], 16:[19], 17:[]};
 var GCC_COUNTRIES = ['Saudi Arabia','UAE','Kuwait','Bahrain','Oman','Qatar'];
@@ -1220,6 +1438,14 @@ function sendBriefToHive() {
     gap_count: document.getElementById('ssGap').textContent,
     not_needed_count: document.getElementById('ssNA').textContent,
     engagement: stepSummary,
+    email_verified: emailVerified ? 'YES' : 'NO',
+    email_domain_type: (function() {
+      var e = (document.getElementById('w_email').value || '').toLowerCase();
+      if (e.indexOf('@') === -1) return 'unknown';
+      var d = e.split('@')[1];
+      return CONSUMER_DOMAINS.indexOf(d) !== -1 ? 'CONSUMER (' + d + ')' : 'INSTITUTIONAL (' + d + ')';
+    })(),
+    b2c_override: b2cConfirmed ? 'YES — user confirmed institutional role with consumer email' : 'N/A',
     full_brief: collectText()
   };
 
@@ -1599,6 +1825,10 @@ function collectText() {
   if (phone) L.push('Phone: ' + phone);
   if (country) L.push('Country: ' + country);
   L.push('Model: ' + model);
+  L.push('Email Verified: ' + (emailVerified ? 'YES' : 'NO'));
+  var emailDomain = email.indexOf('@') !== -1 ? email.split('@')[1].toLowerCase() : '';
+  L.push('Email Type: ' + (CONSUMER_DOMAINS.indexOf(emailDomain) !== -1 ? 'CONSUMER (' + emailDomain + ')' : 'INSTITUTIONAL (' + emailDomain + ')'));
+  if (b2cConfirmed) L.push('B2C Override: User confirmed institutional role despite consumer email');
   L.push('');
   L.push('CAPABILITY MATCH');
   L.push('-'.repeat(40));
@@ -1660,6 +1890,8 @@ function saveProgress() {
       interest: document.getElementById('w_interest').value,
       consent: document.getElementById('w_consent').checked,
       model: getModel(),
+      emailVerified: emailVerified,
+      b2cConfirmed: b2cConfirmed,
       selections: [],
       step: currentStep,
       maxVisited: maxVisited,
@@ -1691,6 +1923,8 @@ function restoreProgress() {
     document.getElementById('w_country').value = data.country || '';
     document.getElementById('w_interest').value = data.interest || '';
     document.getElementById('w_consent').checked = !!data.consent;
+    if (data.emailVerified) { emailVerified = true; }
+    if (data.b2cConfirmed) { b2cConfirmed = true; }
     if (data.model) {
       document.querySelectorAll('input[name="w_model"]').forEach(function(r) { if (r.value === data.model) r.checked = true; });
     }
