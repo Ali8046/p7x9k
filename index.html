@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hive — Partner Configurator | Powered by Awaed</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><polygon points='16,4 22,8 22,16 16,20 10,16 10,8' fill='%2327AE60'/><polygon points='16,0 19,2 19,6 16,8 13,6 13,2' fill='%23273979'/><polygon points='22,3 25,5 25,9 22,11 19,9 19,5' fill='%232C3E50'/><polygon points='22,11 25,13 25,17 22,19 19,17 19,13' fill='%23273979'/><polygon points='16,14 19,16 19,20 16,22 13,20 13,16' fill='%232C3E50'/><polygon points='10,11 13,13 13,17 10,19 7,17 7,13' fill='%23273979'/><polygon points='10,3 13,5 13,9 10,11 7,9 7,5' fill='%232C3E50'/></svg>">
+<style>
+/* ==========================================
+   1. CSS VARIABLES
+   ========================================== */
+:root {
+  --green:#27AE60; --green-light:#3DDC84; --cobalt:#273979; --navy:#2C3E50;
+  --gold:#B8860B; --gold-light:#D4A017; --gold-bg:#FDF8ED;
+  --dark:#1A1A1A; --red:#E74C3C; --warn:#F39C12; --info:#3498DB;
+  --teal:#16A085; --purple:#8E44AD; --rule:#D5D5D5; --bg:#FAFAFA;
+  --t1:#1A1A1A; --t2:#555; --radius:6px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.6;color:var(--t1);background:#fff}
+
+/* ==========================================
+   2. STEPPER
+   ========================================== */
+.stepper{position:sticky;top:0;z-index:100;background:#fff;padding:14px 20px 10px;border-bottom:1px solid #eee;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.stepper-inner{max-width:720px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;position:relative}
+.stepper-track{position:absolute;top:16px;left:48px;right:48px;height:3px;background:#eee;border-radius:2px}
+.stepper-fill{height:100%;background:var(--green);border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1);width:0%}
+.s-dot{display:flex;flex-direction:column;align-items:center;z-index:1;cursor:pointer;min-width:64px;transition:opacity .2s}
+.s-dot.locked{cursor:default;opacity:.5}
+.s-num{width:34px;height:34px;border-radius:50%;background:#eee;color:#999;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;transition:all .3s;border:2px solid transparent}
+.s-dot.active .s-num{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 0 0 4px rgba(39,174,96,.2)}
+.s-dot.done .s-num{background:var(--green);color:#fff;border-color:var(--green)}
+.s-lbl{font-size:10px;color:#999;margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;transition:color .3s}
+.s-dot.active .s-lbl,.s-dot.done .s-lbl{color:var(--green)}
+
+/* ==========================================
+   3. STEP CONTAINER
+   ========================================== */
+.step{display:none;max-width:880px;margin:0 auto;padding:32px 24px 48px}
+.step.active{display:block;animation:fadeUp .45s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.step-hdr{margin-bottom:24px}
+.step-hdr h2{font-size:28px;font-weight:800;color:var(--dark);margin-bottom:4px}
+.step-hdr p{font-size:15px;color:var(--t2)}
+
+/* ==========================================
+   4. BUTTONS
+   ========================================== */
+.btn-row{display:flex;gap:12px;margin-top:32px;align-items:center}
+.btn-primary{background:var(--green);color:#fff;border:none;padding:14px 32px;font-family:inherit;font-size:15px;font-weight:700;border-radius:var(--radius);cursor:pointer;transition:all .2s;letter-spacing:.3px}
+.btn-primary:hover{background:#219150;transform:translateY(-1px);box-shadow:0 4px 12px rgba(39,174,96,.3)}
+.btn-primary span{margin-left:6px}
+.btn-back{background:none;color:var(--t2);border:2px solid var(--rule);padding:12px 24px;font-family:inherit;font-size:14px;font-weight:600;border-radius:var(--radius);cursor:pointer;transition:all .2s}
+.btn-back:hover{border-color:var(--navy);color:var(--navy)}
+.btn-outline{background:none;color:var(--green);border:2px solid var(--green);padding:10px 20px;font-family:inherit;font-size:13px;font-weight:700;border-radius:var(--radius);cursor:pointer;transition:all .2s}
+.btn-outline:hover{background:var(--green);color:#fff}
+.btn-sm{padding:8px 16px;font-size:12px}
+.btn-dark{background:var(--dark);color:#fff;border:none;padding:12px 24px;font-family:inherit;font-size:14px;font-weight:700;border-radius:var(--radius);cursor:pointer;transition:all .2s}
+.btn-dark:hover{background:#333}
+.btn-gold{background:var(--gold);color:#fff;border:none;padding:12px 24px;font-family:inherit;font-size:14px;font-weight:700;border-radius:var(--radius);cursor:pointer}
+
+/* ==========================================
+   5. STEP 1: WELCOME / HERO
+   ========================================== */
+.hero{text-align:center;padding:24px 0 0}
+.hero-logo{width:96px;height:auto;animation:logoIn .8s ease}
+@keyframes logoIn{from{opacity:0;transform:scale(.7) rotate(-10deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+.hero-brand{font-size:52px;font-weight:900;color:var(--dark);letter-spacing:10px;margin:4px 0 2px}
+.hero-tagline{font-size:13px;color:var(--t2);text-transform:uppercase;letter-spacing:3px;margin-bottom:4px}
+.hero-org{font-size:11px;color:var(--t2)}
+.gold-rule{width:60px;height:2px;background:var(--gold);margin:14px auto;border:none}
+.trust-bar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:10px 0;margin:4px 0 16px}
+.trust-badge{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);padding:3px 8px;border:1.5px solid var(--navy);border-radius:3px;white-space:nowrap}
+.hero-metric-box{background:var(--dark);color:#fff;border-radius:var(--radius);padding:20px 28px;margin:16px auto;max-width:520px;text-align:center}
+.hero-metric-num{font-size:48px;font-weight:900;color:var(--green-light);line-height:1}
+.hero-metric-text{font-size:16px;color:rgba(255,255,255,.8);margin-top:4px}
+.welcome-card{background:var(--bg);border:1px solid #eee;border-radius:var(--radius);padding:28px 32px;margin-top:24px;text-align:left;max-width:560px;margin-left:auto;margin-right:auto}
+.welcome-card h3{font-size:20px;font-weight:700;color:var(--dark);margin-bottom:4px}
+.welcome-card .wc-sub{font-size:14px;color:var(--t2);margin-bottom:20px}
+.form-row{margin-bottom:16px}
+.form-row label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--navy);margin-bottom:4px}
+.form-row input,.form-row select{width:100%;padding:10px 12px;border:1.5px solid var(--rule);border-radius:4px;font-family:inherit;font-size:14px;color:var(--t1);background:#fff;outline:none;transition:border-color .2s}
+.form-row input:focus,.form-row select:focus{border-color:var(--green)}
+.form-row input::placeholder{color:#bbb}
+.radio-group{display:flex;gap:8px;flex-wrap:wrap}
+.radio-pill{position:relative}
+.radio-pill input{position:absolute;opacity:0;width:0;height:0}
+.radio-pill span{display:inline-block;padding:8px 18px;border:1.5px solid var(--rule);border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--t2)}
+.radio-pill input:checked+span{background:var(--green);color:#fff;border-color:var(--green)}
+.radio-pill span:hover{border-color:var(--green)}
+
+/* ==========================================
+   6. STEP 2: CAPABILITY MATCH
+   ========================================== */
+.match-bar{position:sticky;top:62px;z-index:50;background:var(--dark);color:#fff;border-radius:var(--radius);padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.ms-item{text-align:center;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;opacity:.8;min-width:60px}
+.ms-num{display:block;font-size:26px;font-weight:900;line-height:1;margin-bottom:2px}
+.ms-ready .ms-num{color:var(--green-light)}
+.ms-prog .ms-num{color:var(--info)}
+.ms-gap .ms-num{color:var(--red)}
+.ms-pend .ms-num{color:rgba(255,255,255,.4)}
+.score-ring-wrap{position:relative;width:56px;height:56px;flex-shrink:0}
+.score-ring{width:100%;height:100%}
+.score-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff}
+.quick-bar{display:flex;gap:8px;margin-bottom:16px}
+.cap-cat{border:1px solid #eee;border-radius:var(--radius);margin-bottom:10px;overflow:hidden;transition:box-shadow .2s}
+.cap-cat:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.cat-hdr{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;user-select:none;transition:background .15s}
+.cat-hdr:hover{background:var(--bg)}
+.cat-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.cat-name{font-size:14px;font-weight:700;color:var(--dark);flex:1}
+.cat-count{font-size:11px;color:var(--t2)}
+.cat-arrow{font-size:10px;color:var(--t2);transition:transform .3s}
+.cap-cat.open .cat-arrow{transform:rotate(180deg)}
+.cat-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.cap-cat.open .cat-body{max-height:2000px}
+.cap-row{display:grid;grid-template-columns:1fr 80px 1fr;gap:8px;align-items:center;padding:8px 16px;border-top:1px solid #f5f5f5;font-size:13px}
+.cap-row:hover{background:#FAFFFE}
+.cap-feature{font-weight:600;color:var(--dark)}
+.cap-note{font-size:11px;color:var(--t2);display:block;margin-top:1px}
+.status-badge{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;padding:2px 6px;border-radius:3px;color:#fff;margin-left:6px;vertical-align:middle}
+.badge-live{background:var(--green)}.badge-beta{background:var(--teal)}.badge-h1{background:var(--info)}
+.badge-h2{background:var(--warn)}.badge-custom{background:var(--purple)}.badge-np{background:#999}
+.badge-cond{background:#fff;color:var(--info);border:1px solid var(--info)}
+.match-cell{text-align:center;font-weight:700;min-height:28px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.match-icon{font-size:18px;line-height:1}
+.match-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.2px}
+.partner-select{width:100%;font-family:inherit;font-size:12px;padding:6px 8px;border:1.5px solid var(--rule);border-radius:4px;background:#fff;cursor:pointer;color:var(--t1);outline:none;transition:border-color .2s}
+.partner-select:focus{border-color:var(--green)}
+
+/* ==========================================
+   7. STEP 3: COMPETITIVE EDGE
+   ========================================== */
+.context-banner{background:linear-gradient(135deg,var(--dark),var(--cobalt));color:#fff;border-radius:var(--radius);padding:16px 20px;margin-bottom:24px;font-size:14px}
+.context-banner b{color:var(--green-light)}
+.ba-table{width:100%;border-collapse:collapse;margin:16px 0}
+.ba-table th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:8px 12px;text-align:left}
+.ba-table th.ba-b{background:var(--dark);color:#fff;width:46%}
+.ba-table th.ba-m{background:#fff;width:8%;border:none}
+.ba-table th.ba-a{background:var(--green);color:#fff;width:46%}
+.ba-table td{padding:8px 12px;font-size:13px;vertical-align:top;border-bottom:1px solid #f0f0f0}
+.ba-table .ba-l{background:#f8f8f8;color:var(--t2)}
+.ba-table .ba-r{background:#F0FFF4;color:var(--dark);font-weight:600}
+.ba-table .ba-c{background:#fff;border:none;text-align:center;font-size:18px;color:var(--green)}
+.sc-section{margin:28px 0;overflow-x:auto}
+.sc-table{width:100%;min-width:600px;border-collapse:collapse}
+.sc-table th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:10px 8px 10px;text-align:center;border-bottom:2px solid var(--dark);white-space:nowrap}
+.sc-table th:first-child{text-align:left;width:160px}
+.sc-table th.th-hive{color:var(--green)}
+.sc-table th.th-alpaca{color:#B8860B}
+.sc-table th.th-ibkr{color:var(--red)}
+.sc-table th.th-gtn{color:var(--cobalt)}
+.sc-table td{padding:10px 8px;text-align:center;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+.sc-table td:first-child{text-align:left;font-weight:600;font-size:13px;color:var(--dark)}
+.sc-table tr:hover{background:var(--bg)}
+.sc-dots{display:flex;gap:4px;justify-content:center;align-items:center}
+.sc-dot{width:12px;height:12px;border-radius:50%;border:1.5px solid transparent;flex-shrink:0}
+.dot-f-hive{background:var(--green);border-color:var(--green)}
+.dot-f-alpaca{background:#FFB900;border-color:#FFB900}
+.dot-f-ibkr{background:var(--red);border-color:var(--red)}
+.dot-f-gtn{background:var(--cobalt);border-color:var(--cobalt)}
+.dot-empty{background:#eee;border-color:#ddd}
+.sc-score{display:block;font-size:11px;font-weight:800;margin-top:3px}
+.sc-score-hive{color:var(--green)}.sc-score-alpaca{color:#B8860B}.sc-score-ibkr{color:var(--red)}.sc-score-gtn{color:var(--cobalt)}
+.sc-totals{display:flex;justify-content:space-around;text-align:center;padding:14px 0;border-top:3px solid var(--dark);margin-top:4px;font-weight:800;min-width:600px}
+.sc-totals div{font-size:13px}
+.sc-totals .t-val{font-size:28px;display:block;line-height:1.1}
+.t-hive{color:var(--green)}.t-alpaca{color:#B8860B}.t-ibkr{color:var(--red)}.t-gtn{color:var(--cobalt)}
+.shariah-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.sh-card{border:2px solid var(--green);border-radius:var(--radius);padding:14px 16px;background:#FAFFFE;position:relative}
+.sh-card h4{font-size:14px;color:var(--green);margin-bottom:6px}
+.sh-card .conventional{font-size:12px;color:var(--red);margin-bottom:3px}
+.sh-card .halal{font-size:12px;color:var(--green);font-weight:700}
+.sh-card .you-need{position:absolute;top:8px;right:8px;background:var(--green);color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;display:none}
+.enforcement-box{background:var(--dark);color:#fff;border-radius:var(--radius);padding:14px 18px;margin:16px 0;font-size:13px;line-height:1.7}
+.list-tag{display:inline-block;padding:2px 8px;border-radius:3px;font-weight:700;font-size:11px;margin-right:4px}
+.tag-green{background:var(--green);color:#fff}.tag-yellow{background:var(--warn);color:var(--dark)}.tag-red{background:var(--red);color:#fff}
+.objection-box{background:#FFF8E7;border-left:4px solid var(--warn);padding:12px 16px;margin:16px 0;border-radius:0 var(--radius) var(--radius) 0}
+.objection-box .ob-q{font-weight:700;color:var(--navy);margin-bottom:4px;font-size:14px}
+.objection-box .ob-a{color:var(--t1);font-size:13px}
+.sub-hdr{font-size:18px;font-weight:800;color:var(--dark);margin:28px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--green)}
+
+/* ==========================================
+   8. STEP 4: ECONOMICS
+   ========================================== */
+.rev-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0}
+.rev-card{background:#fff;border:1.5px solid #eee;border-radius:var(--radius);padding:16px;transition:all .2s;position:relative;overflow:hidden}
+.rev-card:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(39,174,96,.1)}
+.rev-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--green)}
+.rev-card .rc-icon{font-size:24px;margin-bottom:6px}
+.rev-card h4{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:4px}
+.rev-card p{font-size:12px;color:var(--t2);line-height:1.4}
+.rev-card .rc-metric{font-size:11px;color:var(--green);font-weight:700;margin-top:8px;padding-top:8px;border-top:1px solid #f0f0f0}
+.fpsl-box{background:linear-gradient(135deg,#F0FFF4,#EBF5FB);border:2px solid var(--green);border-radius:var(--radius);padding:18px 22px;margin:20px 0}
+.fpsl-box h3{color:var(--green);font-size:18px;margin-bottom:8px}
+.fpsl-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.fpsl-item{padding:8px 10px;background:#fff;border-radius:4px;border:1px solid #eee}
+.fpsl-item b{display:block;font-size:10px;color:var(--navy);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+.fpsl-item span{font-size:13px;font-weight:600}
+.burden-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+.burden-table th{background:var(--dark);color:#fff;padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.3px}
+.burden-table td{padding:8px 12px;border-bottom:1px solid #f0f0f0}
+.burden-table .diy{color:var(--red);font-weight:600}
+.burden-table .hive-col{color:var(--green);font-weight:700}
+.burden-total{background:var(--gold-bg);font-weight:700}
+.absorbs-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.absorbs-card{border-radius:var(--radius);padding:18px 20px}
+.absorbs-you{background:#FAFFFE;border:2px solid var(--green)}
+.absorbs-hive{background:#F0F3F8;border:2px solid var(--cobalt)}
+.absorbs-card h3{font-size:16px;margin-bottom:10px}
+.absorbs-you h3{color:var(--green)}.absorbs-hive h3{color:var(--cobalt)}
+.absorbs-list{list-style:none;font-size:13px}
+.absorbs-list li{padding:4px 0 4px 20px;position:relative}
+.absorbs-list li::before{content:"✓";position:absolute;left:0;font-weight:700}
+.absorbs-you .absorbs-list li::before{color:var(--green)}
+.absorbs-hive .absorbs-list li::before{color:var(--cobalt)}
+
+/* ==========================================
+   9. STEP 5: SUMMARY
+   ========================================== */
+.summary-hero{text-align:center;padding:20px 0 28px}
+.summary-score-ring{width:120px;height:120px;margin:0 auto 12px}
+.summary-pct{font-size:32px;font-weight:900}
+.summary-label{font-size:14px;color:var(--t2)}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin:20px 0}
+.summary-stat{text-align:center;padding:16px;background:var(--bg);border-radius:var(--radius)}
+.summary-stat .ss-num{font-size:32px;font-weight:900;line-height:1}
+.summary-stat .ss-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.3px;color:var(--t2);font-weight:600}
+.ss-green .ss-num{color:var(--green)}.ss-blue .ss-num{color:var(--info)}.ss-red .ss-num{color:var(--red)}.ss-gray .ss-num{color:#999}
+.summary-section{margin:24px 0;padding:20px;background:var(--bg);border-radius:var(--radius)}
+.summary-section h3{font-size:16px;font-weight:700;color:var(--dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+.summary-section ul{list-style:none;font-size:13px}
+.summary-section li{padding:4px 0 4px 20px;position:relative}
+.summary-section li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:700}
+.summary-section li.gap::before{content:"⚠";color:var(--warn)}
+.summary-actions{display:flex;gap:12px;justify-content:center;margin:28px 0;flex-wrap:wrap}
+.timeline-box{background:var(--dark);color:#fff;border-radius:var(--radius);padding:20px 24px;margin:24px 0;text-align:center}
+.timeline-box h3{color:var(--green-light);margin-bottom:12px}
+.timeline-steps{display:flex;justify-content:space-around;gap:8px;flex-wrap:wrap}
+.tl-step{text-align:center;flex:1;min-width:100px}
+.tl-step .tl-num{width:36px;height:36px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;margin:0 auto 6px}
+.tl-step .tl-title{font-size:12px;font-weight:700;color:var(--green-light)}
+.tl-step .tl-time{font-size:10px;color:rgba(255,255,255,.6)}
+.contact-card{text-align:center;margin:24px 0;padding:20px;border:2px solid var(--green);border-radius:var(--radius)}
+.contact-card h3{color:var(--green);margin-bottom:8px}
+.contact-card p{font-size:13px;color:var(--t2)}
+.contact-card a{color:var(--green);text-decoration:none;font-weight:700}
+.doc-footer{text-align:center;font-size:10px;color:var(--t2);padding:16px 0;border-top:1px solid var(--rule);margin-top:24px}
+
+/* ==========================================
+   10. OVERLAY
+   ========================================== */
+.overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);justify-content:center;align-items:center}
+.overlay.active{display:flex}
+.overlay-box{background:#fff;border-radius:8px;width:640px;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.overlay-hdr{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:2px solid var(--green)}
+.overlay-hdr h2{font-size:18px}.overlay-hdr .close-x{background:none;border:none;font-size:24px;cursor:pointer;color:var(--t2)}
+.overlay-body{padding:18px 20px;overflow-y:auto;flex:1}
+.overlay-body pre{font-family:'Consolas','Courier New',monospace;font-size:12px;white-space:pre-wrap;word-wrap:break-word;line-height:1.5}
+.overlay-foot{padding:14px 20px;border-top:1px solid var(--rule);display:flex;gap:10px;justify-content:flex-end}
+
+/* ==========================================
+   11. ANIMATIONS
+   ========================================== */
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.flash{animation:countUp .3s ease}
+
+/* ==========================================
+   12. PRINT
+   ========================================== */
+@media print{
+  body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .stepper,.btn-row,.btn-primary,.btn-back,.btn-outline,.btn-dark,.btn-gold,.quick-bar,.summary-actions{display:none!important}
+  .step{display:none!important;padding:0!important;max-width:100%!important}
+  #step5{display:block!important}
+  .match-bar{position:static;box-shadow:none}
+  @page{size:A4;margin:16mm}
+}
+
+/* ==========================================
+   13. RESPONSIVE
+   ========================================== */
+@media(max-width:768px){
+  .step{padding:20px 16px 40px}
+  .hero-brand{font-size:36px;letter-spacing:6px}
+  .hero-metric-num{font-size:36px}
+  .welcome-card{padding:20px}
+  .cap-row{grid-template-columns:1fr;gap:4px}
+  .match-cell{flex-direction:row;justify-content:flex-start;gap:6px}
+  .rev-cards{grid-template-columns:1fr}
+  .shariah-grid{grid-template-columns:1fr}
+  .absorbs-split{grid-template-columns:1fr}
+  .summary-grid{grid-template-columns:1fr 1fr}
+  .sc-section{-webkit-overflow-scrolling:touch}
+  .sc-table{font-size:12px}
+  .match-bar{flex-direction:column;gap:8px}
+  .stepper-inner{overflow-x:auto;gap:4px}
+  .s-lbl{font-size:8px}
+  .fpsl-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!--  STEPPER                                                      -->
+<!-- ============================================================ -->
+<nav class="stepper" id="stepper">
+  <div class="stepper-inner">
+    <div class="stepper-track"><div class="stepper-fill" id="stepFill"></div></div>
+    <div class="s-dot active" onclick="goTo(1)"><span class="s-num">1</span><span class="s-lbl">Welcome</span></div>
+    <div class="s-dot locked" onclick="goTo(2)"><span class="s-num">2</span><span class="s-lbl">Capabilities</span></div>
+    <div class="s-dot locked" onclick="goTo(3)"><span class="s-num">3</span><span class="s-lbl">Advantage</span></div>
+    <div class="s-dot locked" onclick="goTo(4)"><span class="s-num">4</span><span class="s-lbl">Economics</span></div>
+    <div class="s-dot locked" onclick="goTo(5)"><span class="s-num">5</span><span class="s-lbl">Summary</span></div>
+  </div>
+</nav>
+
+<!-- ============================================================ -->
+<!--  STEP 1: WELCOME                                              -->
+<!-- ============================================================ -->
+<section class="step active" id="step1">
+  <div class="hero">
+    <svg class="hero-logo" viewBox="0 0 120 110" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(60,48)">
+        <polygon points="0,-11 9.53,-5.5 9.53,5.5 0,11 -9.53,5.5 -9.53,-5.5" fill="#27AE60"/>
+        <polygon points="0,-30.05 9.53,-24.55 9.53,-13.55 0,-8.05 -9.53,-13.55 -9.53,-24.55" fill="#273979"/>
+        <polygon points="16.5,-21.53 26.03,-16.03 26.03,-5.03 16.5,0.47 6.97,-5.03 6.97,-16.03" fill="#2C3E50"/>
+        <polygon points="16.5,0.47 26.03,5.97 26.03,16.97 16.5,22.47 6.97,16.97 6.97,5.97" fill="#273979"/>
+        <polygon points="0,8.95 9.53,14.45 9.53,25.45 0,30.95 -9.53,25.45 -9.53,14.45" fill="#2C3E50"/>
+        <polygon points="-16.5,0.47 -6.97,5.97 -6.97,16.97 -16.5,22.47 -26.03,16.97 -26.03,5.97" fill="#273979"/>
+        <polygon points="-16.5,-21.53 -6.97,-16.03 -6.97,-5.03 -16.5,0.47 -26.03,-5.03 -26.03,-16.03" fill="#2C3E50"/>
+      </g>
+    </svg>
+    <div class="hero-brand">HIVE</div>
+    <div class="hero-tagline">Partner Configurator</div>
+    <div class="hero-org">Powered by Awaed</div>
+    <hr class="gold-rule">
+    <div class="trust-bar">
+      <span class="trust-badge">CMA Licensed 03-22247</span>
+      <span class="trust-badge">SIPC Member</span>
+      <span class="trust-badge">SSB Governed</span>
+      <span class="trust-badge">AAOIFI Compliant</span>
+      <span class="trust-badge">SOC 2 Type II</span>
+      <span class="trust-badge">FINRA Reporting</span>
+    </div>
+    <div class="hero-metric-box">
+      <div class="hero-metric-num">39</div>
+      <div class="hero-metric-text">capabilities ready on day one &mdash; more than any platform in the GCC</div>
+    </div>
+  </div>
+
+  <div class="welcome-card">
+    <h3>Let&rsquo;s configure your partnership</h3>
+    <p class="wc-sub">Takes about 5 minutes. You&rsquo;ll get a personalized fit assessment.</p>
+    <div class="form-row">
+      <label>Partner Firm</label>
+      <input type="text" id="w_firm" placeholder="Your firm name">
+    </div>
+    <div class="form-row">
+      <label>Your Name</label>
+      <input type="text" id="w_name" placeholder="Full name">
+    </div>
+    <div class="form-row">
+      <label>Title / Role</label>
+      <input type="text" id="w_title" placeholder="e.g., CEO, CTO, Head of Product">
+    </div>
+    <div class="form-row">
+      <label>Country</label>
+      <select id="w_country">
+        <option value="">Select country</option>
+        <option value="Saudi Arabia">Saudi Arabia</option>
+        <option value="UAE">UAE</option>
+        <option value="Kuwait">Kuwait</option>
+        <option value="Bahrain">Bahrain</option>
+        <option value="Oman">Oman</option>
+        <option value="Qatar">Qatar</option>
+        <option value="Egypt">Egypt</option>
+        <option value="Jordan">Jordan</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>Integration Model</label>
+      <div class="radio-group">
+        <label class="radio-pill"><input type="radio" name="w_model" value="API-First"><span>API-First</span></label>
+        <label class="radio-pill"><input type="radio" name="w_model" value="White-Label"><span>White-Label</span></label>
+        <label class="radio-pill"><input type="radio" name="w_model" value="Both" checked><span>Both</span></label>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Primary Interest</label>
+      <select id="w_interest">
+        <option value="Full Brokerage">Full Brokerage Platform</option>
+        <option value="Trading Only">Trading API Only</option>
+        <option value="Shariah Suite">Shariah-Compliant Suite</option>
+        <option value="Custom">Custom Configuration</option>
+      </select>
+    </div>
+    <div class="btn-row" style="justify-content:center">
+      <button class="btn-primary" onclick="goTo(2)">Configure Your Partnership <span>&rarr;</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!--  STEP 2: CAPABILITY MATCH                                     -->
+<!-- ============================================================ -->
+<section class="step" id="step2">
+  <div class="step-hdr">
+    <h2>What Does Your Firm Need?</h2>
+    <p>Select your priority for each capability. The fit score computes in real time.</p>
+  </div>
+
+  <div class="match-bar" id="matchBar">
+    <div class="ms-item ms-ready"><span class="ms-num" id="msReady">0</span>Ready</div>
+    <div class="ms-item ms-prog"><span class="ms-num" id="msProg">0</span>In Progress</div>
+    <div class="ms-item ms-gap"><span class="ms-num" id="msGap">0</span>Gaps</div>
+    <div class="ms-item ms-pend"><span class="ms-num" id="msPend">49</span>Pending</div>
+    <div class="score-ring-wrap">
+      <svg class="score-ring" viewBox="0 0 64 64">
+        <circle cx="32" cy="32" r="28" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="5"/>
+        <circle cx="32" cy="32" r="28" fill="none" stroke="var(--green-light)" stroke-width="5"
+          id="scoreRing" stroke-dasharray="175.93" stroke-dashoffset="175.93"
+          stroke-linecap="round" transform="rotate(-90 32 32)" style="transition:stroke-dashoffset .5s ease"/>
+      </svg>
+      <span class="score-pct" id="scorePct">0%</span>
+    </div>
+  </div>
+
+  <div class="quick-bar">
+    <button class="btn-outline btn-sm" onclick="selectAllMust()">&#10003; Select All as Must-Have</button>
+    <button class="btn-outline btn-sm" onclick="clearAllSelections()">&#10005; Clear All</button>
+  </div>
+
+  <div id="capContainer"></div>
+
+  <div class="btn-row">
+    <button class="btn-back" onclick="goTo(1)">&larr; Back</button>
+    <button class="btn-primary" onclick="goTo(3)">See How Hive Compares <span>&rarr;</span></button>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!--  STEP 3: COMPETITIVE ADVANTAGE                                -->
+<!-- ============================================================ -->
+<section class="step" id="step3">
+  <div class="step-hdr">
+    <h2>Your Competitive Advantage</h2>
+    <p>Why Hive stands apart from every alternative in the market.</p>
+  </div>
+
+  <div class="context-banner" id="ctxBanner">
+    Based on your selections: <b><span id="ctxReady">0</span> capabilities ready on day one</b>.
+    No other platform delivers this combination for GCC partners.
+  </div>
+
+  <!-- BEFORE / AFTER -->
+  <div class="sub-hdr">The Transformation</div>
+  <table class="ba-table">
+    <thead><tr><th class="ba-b">Without Hive</th><th class="ba-m"></th><th class="ba-a">With Hive</th></tr></thead>
+    <tbody>
+      <tr><td class="ba-l">6-12 months to build US access; $2.5M-$4.5M integration + compliance cost</td><td class="ba-c">&rarr;</td><td class="ba-r">12 weeks to live trading, one contract</td></tr>
+      <tr><td class="ba-l">Manual Shariah screening; no purification engine; SSB retainer overhead</td><td class="ba-c">&rarr;</td><td class="ba-r">Native screening, auto purification, SSB included</td></tr>
+      <tr><td class="ba-l">Equities + ETFs only; no halal options, margin, or FPSL</td><td class="ba-c">&rarr;</td><td class="ba-r">Equities + Options + IPO + Private Markets &mdash; all Shariah-compliant</td></tr>
+      <tr><td class="ba-l">1-2 revenue lines (commissions, maybe PFOF)</td><td class="ba-c">&rarr;</td><td class="ba-r">7+ revenue lines: PFOF, NII, FPSL, margin, FX, subscription, premium</td></tr>
+      <tr><td class="ba-l">Build AML, surveillance, regulatory reporting in-house &mdash; $300K+/yr</td><td class="ba-c">&rarr;</td><td class="ba-r">Hive handles AML, surveillance, all US regulatory filings</td></tr>
+      <tr><td class="ba-l">No white-label; build mobile + web from scratch ($500K-$2M)</td><td class="ba-c">&rarr;</td><td class="ba-r">White-label mobile + web + admin portal, ready to brand</td></tr>
+    </tbody>
+  </table>
+
+  <!-- SCORECARD -->
+  <div class="sub-hdr">Competitive Scorecard</div>
+  <p style="font-size:12px;color:var(--t2);margin-bottom:12px">Scored 1-5 per dimension. Verified against each platform's current documentation, February 2026.</p>
+  <div class="sc-section">
+    <table class="sc-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th class="th-hive">Hive</th>
+          <th class="th-alpaca">Alpaca</th>
+          <th class="th-ibkr">IBKR</th>
+          <th class="th-gtn">GTN</th>
+        </tr>
+      </thead>
+      <tbody id="scArea"></tbody>
+    </table>
+    <div class="sc-totals">
+      <div class="t-hive">Hive<span class="t-val">50</span>/50</div>
+      <div class="t-alpaca">Alpaca<span class="t-val">33</span>/50</div>
+      <div class="t-ibkr">IBKR<span class="t-val">29</span>/50</div>
+      <div class="t-gtn">GTN<span class="t-val">35</span>/50</div>
+    </div>
+  </div>
+
+  <!-- SHARIAH INNOVATION -->
+  <div class="sub-hdr">Shariah Innovation &mdash; Industry First</div>
+  <p style="font-size:13px;margin-bottom:12px">Four products the industry said couldn&rsquo;t be halal. Hive is the <b>only</b> platform with Shariah-compliant structures for all four.</p>
+  <div class="shariah-grid">
+    <div class="sh-card" id="shMargin">
+      <span class="you-need" id="ynMargin">You need this</span>
+      <h4>&#9670; Shariah Margin Lending</h4>
+      <div class="conventional">Conventional: Interest-based borrowing (riba) &mdash; prohibited</div>
+      <div class="halal">Hive: Murabaha / Tawarruq structure &mdash; SSB approved &#10003;</div>
+    </div>
+    <div class="sh-card" id="shOptions">
+      <span class="you-need" id="ynOptions">You need this</span>
+      <h4>&#9670; Shariah Options Trading</h4>
+      <div class="conventional">Conventional: Excessive uncertainty (gharar) &mdash; prohibited</div>
+      <div class="halal">Hive: Arbun-based structure &mdash; SSB approved &#10003;</div>
+    </div>
+    <div class="sh-card" id="shShort">
+      <span class="you-need" id="ynShort">You need this</span>
+      <h4>&#9670; Shariah Short Selling</h4>
+      <div class="conventional">Conventional: Selling what you don&rsquo;t own &mdash; prohibited</div>
+      <div class="halal">Hive: Wa&rsquo;ad / Arbun structure &mdash; SSB approved &#10003;</div>
+    </div>
+    <div class="sh-card" id="shFPSL">
+      <span class="you-need" id="ynFPSL">You need this</span>
+      <h4>&#9670; Shariah Securities Lending (FPSL)</h4>
+      <div class="conventional">Conventional: Lending for interest-bearing fee &mdash; prohibited</div>
+      <div class="halal">Hive: Qard Hasan + Ju&rsquo;alah structure &mdash; SSB approved &#10003;</div>
+    </div>
+  </div>
+
+  <div class="enforcement-box">
+    <b>Trade Enforcement at the Order Level</b><br>
+    Hive doesn&rsquo;t just label Shariah compliance &mdash; it <b>enforces</b> it at the engine.<br><br>
+    <span class="list-tag tag-green">GREEN LIST</span> Fully compliant &mdash; tradeable<br>
+    <span class="list-tag tag-yellow">YELLOW LIST</span> Compliant with purification &mdash; tradeable<br>
+    <span class="list-tag tag-red">RED LIST</span> Non-compliant &mdash; <b>blocked at order level</b>
+  </div>
+
+  <div class="objection-box">
+    <div class="ob-q">&ldquo;We already have a US provider.&rdquo;</div>
+    <div class="ob-a">Compare what you have today vs. Hive: Shariah-compliant margin, options, FPSL, and short selling. Native screening with trade enforcement. White-label apps. 7+ revenue lines. No other provider offers this combination.</div>
+  </div>
+  <div class="objection-box">
+    <div class="ob-q">&ldquo;Alpaca already has GCC partners (Abyan, Drahim, Zad).&rdquo;</div>
+    <div class="ob-a">They do &mdash; and those partners had to build their own Shariah screening, purification, and compliance layers on top. With Hive, it's native. Plus: Shariah-compliant margin, options, FPSL, and short selling are impossible on Alpaca.</div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-back" onclick="goTo(2)">&larr; Back</button>
+    <button class="btn-primary" onclick="goTo(4)">See the Revenue Opportunity <span>&rarr;</span></button>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!--  STEP 4: ECONOMICS                                            -->
+<!-- ============================================================ -->
+<section class="step" id="step4">
+  <div class="step-hdr">
+    <h2>The Revenue Opportunity</h2>
+    <p>Hive unlocks 7+ revenue lines from day one. Here's the unit economics.</p>
+  </div>
+
+  <div class="rev-cards">
+    <div class="rev-card">
+      <div class="rc-icon">&#128200;</div>
+      <h4>PFOF (Payment for Order Flow)</h4>
+      <p>Rebates from market makers on every equity and options order routed.</p>
+      <div class="rc-metric">~$0.003/share equities &middot; ~$0.45/contract options</div>
+    </div>
+    <div class="rev-card">
+      <div class="rc-icon">&#128176;</div>
+      <h4>Net Interest Income (NII)</h4>
+      <p>Spread earned on uninvested client cash held in FDIC sweep accounts.</p>
+      <div class="rc-metric">Spread on Fed Funds rate &middot; scales with AUM</div>
+    </div>
+    <div class="rev-card">
+      <div class="rc-icon">&#128279;</div>
+      <h4>Securities Lending (FPSL)</h4>
+      <p>Income from lending fully-paid client securities to borrowers. Shariah-compliant structure.</p>
+      <div class="rc-metric">Revenue share on lending fees &middot; passive income</div>
+    </div>
+    <div class="rev-card">
+      <div class="rc-icon">&#128202;</div>
+      <h4>Margin Spread</h4>
+      <p>Spread above base rate on Shariah-compliant margin lending (Murabaha).</p>
+      <div class="rc-metric">Spread on margin balances &middot; Shariah-compliant</div>
+    </div>
+    <div class="rev-card">
+      <div class="rc-icon">&#128177;</div>
+      <h4>FX Markup</h4>
+      <p>Markup on currency conversion for international deposits and withdrawals.</p>
+      <div class="rc-metric">Markup on conversion volume</div>
+    </div>
+    <div class="rev-card">
+      <div class="rc-icon">&#11088;</div>
+      <h4>Subscription & Premium</h4>
+      <p>Monthly subscription for premium features: advanced analytics, real-time data, research.</p>
+      <div class="rc-metric">Per-account monthly recurring revenue</div>
+    </div>
+    <div class="rev-card">
+      <div class="rc-icon">&#127992;</div>
+      <h4>White-Label Licensing</h4>
+      <p>Platform fee for white-label mobile app, web app, and admin portal access.</p>
+      <div class="rc-metric">Platform fee + per-account scaling</div>
+    </div>
+  </div>
+
+  <!-- FPSL SPOTLIGHT -->
+  <div class="fpsl-box">
+    <h3>&#128279; FPSL Spotlight &mdash; The Hidden Revenue Engine</h3>
+    <p style="font-size:13px;margin-bottom:10px">Fully Paid Securities Lending generates passive income from client holdings. Hive is the only platform with a <b>Shariah-compliant FPSL structure</b> (Qard Hasan + Ju'alah).</p>
+    <div class="fpsl-grid">
+      <div class="fpsl-item"><b>Structure</b><span>Qard Hasan + Ju&rsquo;alah</span></div>
+      <div class="fpsl-item"><b>Client Participation</b><span>Opt-in per account</span></div>
+      <div class="fpsl-item"><b>Revenue Share</b><span>Partner receives share of lending fees</span></div>
+      <div class="fpsl-item"><b>Collateral</b><span>102%+ maintained daily</span></div>
+      <div class="fpsl-item"><b>Recall</b><span>T+2 standard recall</span></div>
+      <div class="fpsl-item"><b>SSB Approval</b><span>Fully governed &#10003;</span></div>
+    </div>
+  </div>
+
+  <!-- ILLUSTRATIVE UNIT ECONOMICS -->
+  <div class="sub-hdr">Illustrative Unit Economics</div>
+  <p style="font-size:12px;color:var(--t2);margin-bottom:12px">Per 1,000 active accounts with ~$10K average balance. Actual revenue depends on partner volumes, trading activity, and asset mix.</p>
+  <table class="burden-table">
+    <thead><tr><th>Revenue Line</th><th>Driver</th><th>Illustrative Annual Range</th></tr></thead>
+    <tbody>
+      <tr><td>PFOF (Equities)</td><td>~4 trades/account/month</td><td style="color:var(--green);font-weight:700">$120K &ndash; $200K</td></tr>
+      <tr><td>PFOF (Options)</td><td>~1 contract/account/month</td><td style="color:var(--green);font-weight:700">$50K &ndash; $80K</td></tr>
+      <tr><td>Net Interest Income</td><td>~30% cash allocation</td><td style="color:var(--green);font-weight:700">$60K &ndash; $100K</td></tr>
+      <tr><td>Securities Lending</td><td>~15% utilization rate</td><td style="color:var(--green);font-weight:700">$50K &ndash; $90K</td></tr>
+      <tr><td>Margin Spread</td><td>~20% margin usage</td><td style="color:var(--green);font-weight:700">$40K &ndash; $70K</td></tr>
+      <tr><td>FX Conversion</td><td>~$5M/month volume</td><td style="color:var(--green);font-weight:700">$25K &ndash; $50K</td></tr>
+      <tr class="burden-total"><td><b>Combined Potential</b></td><td></td><td style="color:var(--green);font-weight:800;font-size:15px">$345K &ndash; $590K / year</td></tr>
+    </tbody>
+  </table>
+
+  <!-- COMPLIANCE BURDEN -->
+  <div class="sub-hdr">What You Don&rsquo;t Have to Build</div>
+  <p style="font-size:12px;color:var(--t2);margin-bottom:12px">The cost of building US market access in-house vs. what Hive absorbs.</p>
+  <table class="burden-table">
+    <thead><tr><th>Function</th><th>DIY Build Cost</th><th>DIY Annual Cost</th><th>With Hive</th></tr></thead>
+    <tbody>
+      <tr><td>AML + Sanctions Screening</td><td class="diy">$200-400K</td><td class="diy">$150-250K/yr</td><td class="hive-col">Included &#10003;</td></tr>
+      <tr><td>Trade Surveillance</td><td class="diy">$100-200K</td><td class="diy">$100-150K/yr</td><td class="hive-col">Included &#10003;</td></tr>
+      <tr><td>Regulatory Reporting (US)</td><td class="diy">$100-200K</td><td class="diy">$80-120K/yr</td><td class="hive-col">Included &#10003;</td></tr>
+      <tr><td>Shariah Screening Engine</td><td class="diy">$200-400K</td><td class="diy">$100-200K/yr</td><td class="hive-col">Included &#10003;</td></tr>
+      <tr><td>SSB Governance</td><td class="diy">&mdash;</td><td class="diy">$100-200K/yr</td><td class="hive-col">Included &#10003;</td></tr>
+      <tr><td>Technology Infrastructure</td><td class="diy">$500K-1M</td><td class="diy">$200-400K/yr</td><td class="hive-col">Included &#10003;</td></tr>
+      <tr class="burden-total"><td><b>Total</b></td><td class="diy"><b>$1.1M &ndash; $2.2M</b></td><td class="diy"><b>$730K &ndash; $1.3M/yr</b></td><td class="hive-col"><b>One Hive contract</b></td></tr>
+    </tbody>
+  </table>
+
+  <!-- ABSORBS SPLIT -->
+  <div class="sub-hdr">Ownership Map</div>
+  <div class="absorbs-split">
+    <div class="absorbs-card absorbs-you">
+      <h3>&#10003; You Own</h3>
+      <ul class="absorbs-list">
+        <li>Client relationship and acquisition</li>
+        <li>KYC / onboarding (your identity, your brand)</li>
+        <li>Local regulatory compliance (CMA/SCA/CBK)</li>
+        <li>FX conversion (your bank, your rate)</li>
+        <li>Marketing and brand</li>
+        <li>Client support (tier 1)</li>
+        <li>Product pricing and fee schedule</li>
+      </ul>
+    </div>
+    <div class="absorbs-card absorbs-hive">
+      <h3>&#9670; Hive Absorbs</h3>
+      <ul class="absorbs-list">
+        <li>US broker-dealer registration (FINRA/SEC)</li>
+        <li>Trade execution and clearing (self-clearing)</li>
+        <li>Custody and asset safekeeping (SIPC)</li>
+        <li>AML, sanctions, trade surveillance</li>
+        <li>All US regulatory reporting</li>
+        <li>Shariah screening + SSB governance</li>
+        <li>Technology infrastructure (API, apps, data)</li>
+        <li>FPSL program operation</li>
+        <li>Best execution monitoring</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-back" onclick="goTo(3)">&larr; Back</button>
+    <button class="btn-primary" onclick="generateSummary();goTo(5)">Generate Your Partnership Brief <span>&rarr;</span></button>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!--  STEP 5: SUMMARY                                              -->
+<!-- ============================================================ -->
+<section class="step" id="step5">
+  <div class="step-hdr" style="text-align:center">
+    <h2>Your Hive Partnership Brief</h2>
+    <p>Personalized assessment based on your selections</p>
+  </div>
+
+  <div class="summary-hero">
+    <div class="summary-score-ring">
+      <svg viewBox="0 0 120 120" style="width:100%;height:100%">
+        <circle cx="60" cy="60" r="52" fill="none" stroke="#eee" stroke-width="8"/>
+        <circle cx="60" cy="60" r="52" fill="none" stroke="var(--green)" stroke-width="8"
+          id="summaryRing" stroke-dasharray="326.73" stroke-dashoffset="326.73"
+          stroke-linecap="round" transform="rotate(-90 60 60)" style="transition:stroke-dashoffset 1s ease"/>
+      </svg>
+    </div>
+    <div class="summary-pct" id="summaryPct" style="color:var(--green);margin-top:-76px;position:relative">0%</div>
+    <div class="summary-label">Platform Fit Score</div>
+  </div>
+
+  <div class="summary-grid" id="summaryGrid">
+    <div class="summary-stat ss-green"><span class="ss-num" id="ssReady">0</span><span class="ss-lbl">Ready</span></div>
+    <div class="summary-stat ss-blue"><span class="ss-num" id="ssProg">0</span><span class="ss-lbl">In Progress</span></div>
+    <div class="summary-stat ss-red"><span class="ss-num" id="ssGap">0</span><span class="ss-lbl">Gaps</span></div>
+    <div class="summary-stat ss-gray"><span class="ss-num" id="ssNA">0</span><span class="ss-lbl">Not Needed</span></div>
+  </div>
+
+  <div id="summaryContent"></div>
+
+  <div class="summary-actions">
+    <button class="btn-primary" onclick="window.print()">&#9113; Print as PDF</button>
+    <button class="btn-dark" onclick="copySummaryText()">&#128203; Copy Summary</button>
+    <button class="btn-gold" onclick="emailSummary()">&#9993; Email to Hive</button>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline-box">
+    <h3>12 Weeks to Live Trading</h3>
+    <div class="timeline-steps">
+      <div class="tl-step"><div class="tl-num">1</div><div class="tl-title">Return Brief</div><div class="tl-time">Today</div></div>
+      <div class="tl-step"><div class="tl-num">2</div><div class="tl-title">Solution Architecture</div><div class="tl-time">5 business days</div></div>
+      <div class="tl-step"><div class="tl-num">3</div><div class="tl-title">Joint Workshop</div><div class="tl-time">Week 2-3</div></div>
+      <div class="tl-step"><div class="tl-num">4</div><div class="tl-title">Pilot Program</div><div class="tl-time">Week 4-8</div></div>
+      <div class="tl-step"><div class="tl-num">5</div><div class="tl-title">Go Live</div><div class="tl-time">Week 12</div></div>
+    </div>
+  </div>
+
+  <div class="contact-card">
+    <h3>Hive &mdash; Powered by Awaed</h3>
+    <p>Institutional Solutions Division</p>
+    <p style="font-size:12px;color:var(--t2);margin-top:6px">AlUrubah Road 2163, AlMathar Ash Shamali 12334, Riyadh, Saudi Arabia<br>
+    CMA License 03-22247 &middot; CR 1010734817</p>
+    <p style="margin-top:8px"><a href="https://awaed.capital">awaed.capital</a> &middot; <a href="mailto:hive@awaed.capital">hive@awaed.capital</a></p>
+  </div>
+
+  <div class="doc-footer">
+    <span id="docId"></span> &middot; Confidential &mdash; Hive &middot; Powered by Awaed &middot; <span id="docTs"></span>
+  </div>
+
+  <div class="btn-row" style="justify-content:center;margin-top:16px">
+    <button class="btn-back" onclick="goTo(4)">&larr; Back to Economics</button>
+  </div>
+</section>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay">
+  <div class="overlay-box">
+    <div class="overlay-hdr"><h2>Summary Copied</h2><button class="close-x" onclick="closeOverlay()">&times;</button></div>
+    <div class="overlay-body"><pre id="overlayText"></pre></div>
+    <div class="overlay-foot">
+      <button class="btn-dark" onclick="closeOverlay()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// 1. DATA
+// ============================================================
+var CAP_DATA = [
+  {cat:'What You Can Trade',icon:'#27AE60',items:[
+    {f:'US Equities (NYSE, NASDAQ)',s:'live',n:''},
+    {f:'US ETFs',s:'live',n:''},
+    {f:'Fractional Shares',s:'live',n:''},
+    {f:'US-Listed Options',s:'live',n:'Shariah-compliant',tag:'options'},
+    {f:'US IPO Access',s:'live',n:''},
+    {f:'ADRs / GDRs',s:'live',n:''},
+    {f:'US Treasuries & Bonds',s:'np',n:'Shariah-first strategy'},
+    {f:'Private Markets / Alternatives',s:'live',n:''}
+  ]},
+  {cat:'How You Trade',icon:'#273979',items:[
+    {f:'Standard Orders (Market, Limit, Stop)',s:'live',n:''},
+    {f:'Advanced Orders (Trailing, Bracket, GTC)',s:'live',n:''},
+    {f:'Extended Hours (Pre + After)',s:'live',n:''},
+    {f:'Overnight Trading (20:00-04:00 ET)',s:'live',n:''},
+    {f:'Short Selling + Locate',s:'live',n:'Shariah-compliant',tag:'short'},
+    {f:'Multi-Leg Options Strategies',s:'h1',n:''},
+    {f:'Basket / Notional Orders',s:'h1',n:''},
+    {f:'DRIP (Dividend Reinvestment)',s:'h1',n:''}
+  ]},
+  {cat:'How You Earn',icon:'#B8860B',items:[
+    {f:'Margin Lending',s:'live',n:'Shariah-compliant',tag:'margin'},
+    {f:'Securities Lending (FPSL)',s:'live',n:'Shariah-compliant',tag:'fpsl'},
+    {f:'Cash Sweep (Conventional)',s:'live',n:''},
+    {f:'Murabaha Sweep (Shariah)',s:'h1',n:''}
+  ]},
+  {cat:'How Money Moves',icon:'#16A085',items:[
+    {f:'Wire Transfer (SWIFT)',s:'live',n:'Omnibus or Segregated'},
+    {f:'Local Virtual IBANs (SAR)',s:'cond',n:'Requires Fully Disclosed'},
+    {f:'FX Conversion',s:'np',n:'Partner responsibility'},
+    {f:'Instant Buying Power',s:'live',n:''},
+    {f:'SIPC + Excess SIPC',s:'live',n:'Excess on demand'}
+  ]},
+  {cat:'How You Connect',icon:'#3498DB',items:[
+    {f:'REST + JSON API',s:'live',n:''},
+    {f:'WebSocket Streaming',s:'custom',n:'On demand'},
+    {f:'FIX Protocol (4.2/4.4)',s:'live',n:''},
+    {f:'Webhooks / Events',s:'live',n:''},
+    {f:'Sandbox / Paper Trading',s:'beta',n:''},
+    {f:'SDK / Client Libraries',s:'beta',n:''},
+    {f:'TradingView Integration',s:'live',n:''}
+  ]},
+  {cat:'What Data You Get',icon:'#8E44AD',items:[
+    {f:'Real-Time Quotes (L1)',s:'live',n:''},
+    {f:'Level 2 / Depth',s:'live',n:''},
+    {f:'Options Chains + Greeks',s:'live',n:''},
+    {f:'Historical OHLCV',s:'live',n:''},
+    {f:'Fundamentals + News',s:'live',n:''}
+  ]},
+  {cat:'How You Stay Compliant',icon:'#E74C3C',items:[
+    {f:'KYC / Onboarding',s:'live',n:'Partner-owned; FD or Segregated'},
+    {f:'AML + Sanctions Screening',s:'live',n:'Hive end-to-end'},
+    {f:'Trade Surveillance',s:'live',n:'Hive-owned'},
+    {f:'Kill Switch',s:'live',n:'Dual — Hive veto'},
+    {f:'Pre-Trade Risk Checks',s:'live',n:'Dual-layer, Hive veto'},
+    {f:'FATCA / CRS Reporting',s:'live',n:'Fully Disclosed only'},
+    {f:'Regulatory Reporting',s:'live',n:'Hive handles all'},
+    {f:'Best Execution Audit',s:'live',n:'On request'}
+  ]},
+  {cat:'Shariah Governance',icon:'#27AE60',items:[
+    {f:'Shariah Stock Screening',s:'live',n:'Green/Yellow trade, Red blocked'},
+    {f:'Auto Purification Calc',s:'live',n:''},
+    {f:'SSB Governance',s:'live',n:''},
+    {f:'Client-Facing Halal Badge',s:'live',n:''},
+    {f:'Zakat Calculation',s:'custom',n:''}
+  ]},
+  {cat:'How You Brand It',icon:'#2C3E50',items:[
+    {f:'API-Only Integration',s:'live',n:''},
+    {f:'White-Label Mobile App',s:'live',n:''},
+    {f:'White-Label Web App',s:'live',n:''},
+    {f:'Partner Admin Dashboard',s:'live',n:''},
+    {f:'Arabic Language Support',s:'beta',n:''},
+    {f:'Multi-Language Support',s:'custom',n:''}
+  ]}
+];
+
+var SC_DATA = [
+  {label:'Product Breadth',hive:5,alpaca:4,ibkr:5,gtn:4},
+  {label:'Shariah Governance',hive:5,alpaca:0,ibkr:0,gtn:2},
+  {label:'Technology & API',hive:5,alpaca:5,ibkr:4,gtn:4},
+  {label:'White-Label Ready',hive:5,alpaca:1,ibkr:2,gtn:4},
+  {label:'Compliance Coverage',hive:5,alpaca:4,ibkr:5,gtn:4},
+  {label:'Revenue Opportunity',hive:5,alpaca:3,ibkr:3,gtn:2},
+  {label:'Market Data',hive:5,alpaca:4,ibkr:5,gtn:3},
+  {label:'Regional Fit (GCC)',hive:5,alpaca:3,ibkr:2,gtn:5},
+  {label:'Speed to Market',hive:5,alpaca:5,ibkr:2,gtn:3},
+  {label:'Partner Control',hive:5,alpaca:4,ibkr:1,gtn:4}
+];
+
+var STATUS_MAP = {
+  live:{label:'LIVE',cls:'badge-live'},beta:{label:'BETA',cls:'badge-beta'},
+  h1:{label:'H1 2026',cls:'badge-h1'},h2:{label:'H2 2026',cls:'badge-h2'},
+  custom:{label:'CUSTOM',cls:'badge-custom'},np:{label:'N/P',cls:'badge-np'},
+  cond:{label:'COND.',cls:'badge-cond'}
+};
+
+var currentStep = 1;
+var maxVisited = 1;
+
+// ============================================================
+// 2. STEP NAVIGATION
+// ============================================================
+function goTo(n) {
+  if (n < 1 || n > 5) return;
+  if (n > maxVisited + 1) return;
+  var prev = document.getElementById('step' + currentStep);
+  var next = document.getElementById('step' + n);
+  prev.classList.remove('active');
+  next.classList.add('active');
+  currentStep = n;
+  if (n > maxVisited) maxVisited = n;
+  updateStepper();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  if (n === 3) updateContextBanner();
+  if (n === 5) animateSummaryRing();
+}
+
+function updateStepper() {
+  var dots = document.querySelectorAll('.s-dot');
+  var fill = document.getElementById('stepFill');
+  dots.forEach(function(d, i) {
+    var step = i + 1;
+    d.classList.remove('active', 'done', 'locked');
+    if (step === currentStep) d.classList.add('active');
+    else if (step <= maxVisited) d.classList.add('done');
+    else d.classList.add('locked');
+  });
+  fill.style.width = ((currentStep - 1) / 4 * 100) + '%';
+}
+
+// ============================================================
+// 3. CAPABILITY MATCH RENDERING
+// ============================================================
+var globalIdx = 0;
+var allSelects = [];
+
+function renderCategories() {
+  var container = document.getElementById('capContainer');
+  container.innerHTML = '';
+  globalIdx = 0;
+  CAP_DATA.forEach(function(cat, ci) {
+    var div = document.createElement('div');
+    div.className = 'cap-cat' + (ci === 0 ? ' open' : '');
+    div.id = 'cat_' + ci;
+    var count = cat.items.length;
+    div.innerHTML = '<div class="cat-hdr" onclick="toggleCat(' + ci + ')">' +
+      '<span class="cat-icon" style="background:' + cat.icon + '">' + (ci + 1) + '</span>' +
+      '<span class="cat-name">' + cat.cat + '</span>' +
+      '<span class="cat-count">' + count + ' features &middot; <span id="catSel_' + ci + '">0</span> selected</span>' +
+      '<span class="cat-arrow">&#9660;</span></div>' +
+      '<div class="cat-body" id="catBody_' + ci + '"></div>';
+    container.appendChild(div);
+    var body = document.getElementById('catBody_' + ci);
+    cat.items.forEach(function(item) {
+      var sm = STATUS_MAP[item.s];
+      var row = document.createElement('div');
+      row.className = 'cap-row';
+      row.innerHTML = '<div><span class="cap-feature">' + item.f + '</span>' +
+        '<span class="status-badge ' + sm.cls + '">' + sm.label + '</span>' +
+        (item.n ? '<span class="cap-note">' + item.n + '</span>' : '') + '</div>' +
+        '<div class="match-cell" id="mc_' + globalIdx + '"></div>' +
+        '<div><select class="partner-select" data-idx="' + globalIdx + '" data-hive="' + item.s + '"' +
+        (item.tag ? ' data-tag="' + item.tag + '"' : '') +
+        ' onchange="updateMatch(this)">' +
+        '<option value="">— Select —</option>' +
+        '<option value="must_d1">Must Have (Day 1)</option>' +
+        '<option value="must_p2">Must Have (Phase 2)</option>' +
+        '<option value="nice">Nice to Have</option>' +
+        '<option value="not_needed">Not Needed</option></select></div>';
+      body.appendChild(row);
+      globalIdx++;
+    });
+  });
+  allSelects = document.querySelectorAll('.partner-select');
+}
+
+function toggleCat(ci) {
+  var el = document.getElementById('cat_' + ci);
+  el.classList.toggle('open');
+}
+
+// ============================================================
+// 4. MATCH LOGIC
+// ============================================================
+function computeMatch(s, p) {
+  if (!p || p === '') return {icon:'', label:'', color:'#ccc', cls:''};
+  if (p === 'not_needed') return {icon:'—', label:'N/A', color:'#999', cls:'na'};
+  if (s === 'live' && (p === 'must_d1' || p === 'must_p2' || p === 'nice')) return {icon:'✓', label:'Ready', color:'#27AE60', cls:'ready'};
+  if (s === 'beta' && (p === 'must_d1' || p === 'must_p2')) return {icon:'◐', label:'Beta', color:'#16A085', cls:'beta'};
+  if (s === 'beta' && p === 'nice') return {icon:'✓', label:'Available', color:'#27AE60', cls:'ready'};
+  if (s === 'h1' && p === 'must_d1') return {icon:'⏱', label:'H1 2026', color:'#3498DB', cls:'prog'};
+  if (s === 'h1' && (p === 'must_p2' || p === 'nice')) return {icon:'✓', label:'Aligned', color:'#3498DB', cls:'prog'};
+  if (s === 'h2' && p === 'must_d1') return {icon:'⚠', label:'Gap', color:'#F39C12', cls:'gap'};
+  if (s === 'h2' && (p === 'must_p2' || p === 'nice')) return {icon:'⏱', label:'H2 2026', color:'#3498DB', cls:'prog'};
+  if (s === 'custom' && (p === 'must_d1' || p === 'must_p2')) return {icon:'⚙', label:'Scope', color:'#8E44AD', cls:'prog'};
+  if (s === 'custom' && p === 'nice') return {icon:'⚙', label:'Scope', color:'#8E44AD', cls:'prog'};
+  if ((s === 'np' || s === 'cond') && p === 'must_d1') return {icon:'✗', label:'Gap', color:'#E74C3C', cls:'gap'};
+  if (s === 'cond' && (p === 'must_p2' || p === 'nice')) return {icon:'◐', label:'Cond.', color:'#F39C12', cls:'prog'};
+  if (s === 'np' && (p === 'must_p2' || p === 'nice')) return {icon:'—', label:'N/P', color:'#999', cls:'gap'};
+  return {icon:'?', label:'', color:'#ccc', cls:''};
+}
+
+function updateMatch(sel) {
+  var i = sel.getAttribute('data-idx');
+  var s = sel.getAttribute('data-hive');
+  var p = sel.value;
+  var m = computeMatch(s, p);
+  var cell = document.getElementById('mc_' + i);
+  cell.innerHTML = '<span class="match-icon" style="color:' + m.color + '">' + m.icon + '</span>' +
+    '<span class="match-label" style="color:' + m.color + '">' + m.label + '</span>';
+  updateSummaryBar();
+  updateCatCounts();
+}
+
+function updateSummaryBar() {
+  var ready = 0, prog = 0, gap = 0, pending = 0, na = 0, total = 0;
+  allSelects.forEach(function(s) {
+    if (!s.value) { pending++; return; }
+    var m = computeMatch(s.getAttribute('data-hive'), s.value);
+    if (m.cls === 'ready') { ready++; total++; }
+    else if (m.cls === 'beta' || m.cls === 'prog') { prog++; total++; }
+    else if (m.cls === 'gap') { gap++; total++; }
+    else if (m.cls === 'na') { na++; }
+    else { pending++; }
+  });
+  document.getElementById('msReady').textContent = ready;
+  document.getElementById('msProg').textContent = prog;
+  document.getElementById('msGap').textContent = gap;
+  document.getElementById('msPend').textContent = pending;
+  var pct = total > 0 ? Math.round(ready / total * 100) : 0;
+  document.getElementById('scorePct').textContent = pct + '%';
+  var ring = document.getElementById('scoreRing');
+  var circumference = 175.93;
+  ring.style.strokeDashoffset = circumference - (circumference * pct / 100);
+}
+
+function updateCatCounts() {
+  var idx = 0;
+  CAP_DATA.forEach(function(cat, ci) {
+    var selected = 0;
+    cat.items.forEach(function() {
+      var sel = allSelects[idx];
+      if (sel && sel.value) selected++;
+      idx++;
+    });
+    var el = document.getElementById('catSel_' + ci);
+    if (el) el.textContent = selected;
+  });
+}
+
+// ============================================================
+// 5. QUICK ACTIONS
+// ============================================================
+function selectAllMust() {
+  allSelects.forEach(function(s) {
+    var hive = s.getAttribute('data-hive');
+    if (hive === 'live' || hive === 'beta') s.value = 'must_d1';
+    else if (hive === 'h1' || hive === 'h2') s.value = 'must_p2';
+    else if (hive === 'custom') s.value = 'nice';
+    else s.value = 'not_needed';
+    updateMatch(s);
+  });
+}
+
+function clearAllSelections() {
+  allSelects.forEach(function(s) {
+    s.value = '';
+    var i = s.getAttribute('data-idx');
+    document.getElementById('mc_' + i).innerHTML = '';
+  });
+  updateSummaryBar();
+  updateCatCounts();
+}
+
+// ============================================================
+// 6. SCORECARD RENDERING
+// ============================================================
+function renderDots(n, cls) {
+  var h = '';
+  for (var i = 0; i < 5; i++) h += '<span class="sc-dot ' + (i < n ? cls : 'dot-empty') + '"></span>';
+  return h;
+}
+
+function renderScorecard() {
+  var area = document.getElementById('scArea');
+  SC_DATA.forEach(function(d) {
+    var row = document.createElement('tr');
+    row.innerHTML = '<td>' + d.label + '</td>' +
+      '<td><div class="sc-dots">' + renderDots(d.hive, 'dot-f-hive') + '</div><span class="sc-score sc-score-hive">' + d.hive + '/5</span></td>' +
+      '<td><div class="sc-dots">' + renderDots(d.alpaca, 'dot-f-alpaca') + '</div><span class="sc-score sc-score-alpaca">' + d.alpaca + '/5</span></td>' +
+      '<td><div class="sc-dots">' + renderDots(d.ibkr, 'dot-f-ibkr') + '</div><span class="sc-score sc-score-ibkr">' + d.ibkr + '/5</span></td>' +
+      '<td><div class="sc-dots">' + renderDots(d.gtn, 'dot-f-gtn') + '</div><span class="sc-score sc-score-gtn">' + d.gtn + '/5</span></td>';
+    area.appendChild(row);
+  });
+}
+
+// ============================================================
+// 7. ADAPTIVE CONTENT (STEP 3)
+// ============================================================
+function updateContextBanner() {
+  var ready = 0;
+  allSelects.forEach(function(s) {
+    if (!s.value) return;
+    var m = computeMatch(s.getAttribute('data-hive'), s.value);
+    if (m.cls === 'ready') ready++;
+  });
+  document.getElementById('ctxReady').textContent = ready;
+
+  var tagMap = {margin: 'ynMargin', options: 'ynOptions', short: 'ynShort', fpsl: 'ynFPSL'};
+  Object.keys(tagMap).forEach(function(tag) {
+    document.getElementById(tagMap[tag]).style.display = 'none';
+  });
+  allSelects.forEach(function(s) {
+    var tag = s.getAttribute('data-tag');
+    if (tag && s.value && s.value !== 'not_needed' && tagMap[tag]) {
+      document.getElementById(tagMap[tag]).style.display = 'inline-block';
+    }
+  });
+}
+
+// ============================================================
+// 8. SUMMARY GENERATION (STEP 5)
+// ============================================================
+function generateSummary() {
+  var firm = document.getElementById('w_firm').value || 'Partner';
+  var name = document.getElementById('w_name').value || '';
+  var title = document.getElementById('w_title').value || '';
+  var country = document.getElementById('w_country').value || '';
+  var model = '';
+  document.querySelectorAll('input[name="w_model"]').forEach(function(r) { if (r.checked) model = r.value; });
+  var interest = document.getElementById('w_interest').value || '';
+
+  var ready = 0, prog = 0, gap = 0, na = 0;
+  var readyList = [], progList = [], gapList = [];
+  allSelects.forEach(function(s) {
+    if (!s.value) return;
+    var m = computeMatch(s.getAttribute('data-hive'), s.value);
+    var feat = s.closest('.cap-row').querySelector('.cap-feature').textContent;
+    if (m.cls === 'ready') { ready++; readyList.push(feat); }
+    else if (m.cls === 'beta' || m.cls === 'prog') { prog++; progList.push(feat + ' (' + m.label + ')'); }
+    else if (m.cls === 'gap') { gap++; gapList.push(feat); }
+    else if (m.cls === 'na') { na++; }
+  });
+
+  var total = ready + prog + gap;
+  var pct = total > 0 ? Math.round(ready / total * 100) : 0;
+
+  document.getElementById('ssReady').textContent = ready;
+  document.getElementById('ssProg').textContent = prog;
+  document.getElementById('ssGap').textContent = gap;
+  document.getElementById('ssNA').textContent = na;
+  document.getElementById('summaryPct').textContent = pct + '%';
+
+  var ring = document.getElementById('summaryRing');
+  var circ = 326.73;
+  ring.style.strokeDashoffset = circ - (circ * pct / 100);
+
+  var content = document.getElementById('summaryContent');
+  var html = '';
+
+  html += '<div class="summary-section"><h3>Partnership Profile</h3>';
+  html += '<ul style="list-style:none">';
+  html += '<li style="padding-left:0"><b>Firm:</b> ' + firm + '</li>';
+  if (name) html += '<li style="padding-left:0"><b>Contact:</b> ' + name + (title ? ', ' + title : '') + '</li>';
+  if (country) html += '<li style="padding-left:0"><b>Country:</b> ' + country + '</li>';
+  html += '<li style="padding-left:0"><b>Integration Model:</b> ' + model + '</li>';
+  html += '<li style="padding-left:0"><b>Primary Interest:</b> ' + interest + '</li>';
+  html += '</ul></div>';
+
+  if (readyList.length > 0) {
+    html += '<div class="summary-section"><h3 style="color:var(--green)">&#10003; Ready on Day One (' + ready + ')</h3><ul>';
+    readyList.forEach(function(f) { html += '<li>' + f + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  if (progList.length > 0) {
+    html += '<div class="summary-section"><h3 style="color:var(--info)">&#9672; In Progress (' + prog + ')</h3><ul>';
+    progList.forEach(function(f) { html += '<li>' + f + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  if (gapList.length > 0) {
+    html += '<div class="summary-section"><h3 style="color:var(--warn)">&#9888; Gaps to Discuss (' + gap + ')</h3><ul>';
+    gapList.forEach(function(f) { html += '<li class="gap">' + f + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  html += '<div class="summary-section"><h3>Key Differentiators for ' + firm + '</h3><ul>';
+  html += '<li>Self-clearing US broker-dealer &mdash; no intermediary dependency</li>';
+  html += '<li>39 capabilities live on day one &mdash; industry leading</li>';
+  if (pct >= 70) html += '<li>' + pct + '% platform fit score &mdash; strong alignment</li>';
+  var hasShariahNeed = false;
+  allSelects.forEach(function(s) {
+    if (s.getAttribute('data-tag') && s.value && s.value !== 'not_needed') hasShariahNeed = true;
+  });
+  if (hasShariahNeed) {
+    html += '<li>Shariah-compliant margin, options, FPSL, and short selling &mdash; industry first</li>';
+    html += '<li>Native trade enforcement (Green/Yellow/Red list) at the order engine</li>';
+  }
+  if (model === 'White-Label' || model === 'Both') html += '<li>White-label mobile + web + admin portal included</li>';
+  html += '<li>7+ revenue lines unlocked from day one</li>';
+  html += '<li>$1.1M-$2.2M in compliance and infrastructure costs absorbed by Hive</li>';
+  html += '</ul></div>';
+
+  content.innerHTML = html;
+}
+
+function animateSummaryRing() {
+  var total = 0, ready = 0;
+  allSelects.forEach(function(s) {
+    if (!s.value) return;
+    var m = computeMatch(s.getAttribute('data-hive'), s.value);
+    if (m.cls === 'ready') { ready++; total++; }
+    else if (m.cls !== 'na') total++;
+  });
+  var pct = total > 0 ? Math.round(ready / total * 100) : 0;
+  var ring = document.getElementById('summaryRing');
+  var circ = 326.73;
+  ring.style.strokeDashoffset = circ;
+  setTimeout(function() {
+    ring.style.strokeDashoffset = circ - (circ * pct / 100);
+  }, 100);
+}
+
+// ============================================================
+// 9. UTILITIES
+// ============================================================
+function collectText() {
+  var L = [];
+  L.push('HIVE PARTNERSHIP BRIEF');
+  L.push('Doc: ' + DOC_ID);
+  L.push('Generated: ' + DOC_TS);
+  L.push('='.repeat(50));
+  var firm = document.getElementById('w_firm').value || 'Partner';
+  var name = document.getElementById('w_name').value || '';
+  var country = document.getElementById('w_country').value || '';
+  var model = ''; document.querySelectorAll('input[name="w_model"]').forEach(function(r) { if (r.checked) model = r.value; });
+  L.push('Firm: ' + firm);
+  if (name) L.push('Contact: ' + name);
+  if (country) L.push('Country: ' + country);
+  L.push('Model: ' + model);
+  L.push('');
+  L.push('CAPABILITY MATCH');
+  L.push('-'.repeat(40));
+  allSelects.forEach(function(s) {
+    if (!s.value) return;
+    var feat = s.closest('.cap-row').querySelector('.cap-feature').textContent;
+    var m = computeMatch(s.getAttribute('data-hive'), s.value);
+    L.push('  ' + feat + ': ' + s.options[s.selectedIndex].text + ' -> ' + m.label);
+  });
+  L.push('');
+  L.push('FIT SCORE: ' + document.getElementById('summaryPct').textContent);
+  L.push('Ready: ' + document.getElementById('ssReady').textContent);
+  L.push('In Progress: ' + document.getElementById('ssProg').textContent);
+  L.push('Gaps: ' + document.getElementById('ssGap').textContent);
+  L.push('');
+  L.push('='.repeat(50));
+  L.push('Hive — Powered by Awaed');
+  L.push('hive@awaed.capital | awaed.capital');
+  return L.join('\n');
+}
+
+function copySummaryText() {
+  var text = collectText();
+  navigator.clipboard.writeText(text).then(function() {
+    document.getElementById('overlayText').textContent = text;
+    document.getElementById('overlay').classList.add('active');
+  });
+}
+
+function emailSummary() {
+  var text = collectText();
+  var subj = encodeURIComponent('Hive Partnership Brief - ' + DOC_ID + ' - ' + (document.getElementById('w_firm').value || 'Partner'));
+  var body = encodeURIComponent(text.length > 1800 ? 'Partnership brief for ' + DOC_ID + ' copied to clipboard. Please paste below.' : text);
+  if (text.length > 1800) navigator.clipboard.writeText(text);
+  window.open('mailto:hive@awaed.capital?subject=' + subj + '&body=' + body);
+}
+
+function closeOverlay() {
+  document.getElementById('overlay').classList.remove('active');
+}
+document.getElementById('overlay').addEventListener('click', function(e) { if (e.target === this) closeOverlay(); });
+
+// ============================================================
+// 10. DOC ID & TIMESTAMP
+// ============================================================
+var DOC_ID, DOC_TS;
+(function() {
+  var c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  DOC_ID = 'HV-';
+  for (var i = 0; i < 8; i++) DOC_ID += c.charAt(Math.floor(Math.random() * c.length));
+  var d = new Date(), pad = function(n) { return n < 10 ? '0' + n : n; };
+  DOC_TS = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  document.getElementById('docId').textContent = DOC_ID;
+  document.getElementById('docTs').textContent = DOC_TS;
+})();
+
+// ============================================================
+// 11. INIT
+// ============================================================
+renderCategories();
+renderScorecard();
+updateSummaryBar();
+</script>
+</body>
+</html>
