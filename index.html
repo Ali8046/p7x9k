@@ -304,7 +304,37 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 .b2c-box .b2c-icon{font-size:48px;margin-bottom:12px}
 
 /* ==========================================
-   12. PRINT
+   12. CUSTOM REVENUE MODEL
+   ========================================== */
+.crm-cta{background:linear-gradient(135deg,#27AE60 0%,#1A7A3D 100%);border-radius:10px;padding:24px;text-align:center;margin:20px 0;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.crm-cta:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(39,174,96,.3)}
+.crm-cta h3{color:#fff;font-size:18px;margin-bottom:4px}
+.crm-cta p{color:rgba(255,255,255,.85);font-size:13px;margin:0}
+.crm-panel{display:none;margin:20px 0}
+.crm-panel.active{display:block}
+.nda-box{background:#FAFFFE;border:2px solid var(--green);border-radius:10px;padding:24px 28px;margin-bottom:16px}
+.nda-box h4{font-size:16px;color:var(--dark);margin-bottom:10px}
+.nda-text{font-size:12px;color:var(--t2);line-height:1.7;margin-bottom:16px}
+.nda-text b{color:var(--dark)}
+.nda-accept-row{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;background:#F0FFF4;border-radius:6px;margin-bottom:12px}
+.nda-accept-row label{font-size:12px;color:var(--dark);cursor:pointer;font-weight:600;line-height:1.5}
+.crm-form{background:#fff;border:1px solid #eee;border-radius:10px;padding:24px 28px}
+.crm-form h4{font-size:16px;color:var(--dark);margin-bottom:4px}
+.crm-form .crm-sub{font-size:13px;color:var(--t2);margin-bottom:20px;line-height:1.5}
+.crm-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.crm-field label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--navy);margin-bottom:3px}
+.crm-field input,.crm-field select{width:100%;padding:9px 12px;border:1.5px solid var(--rule);border-radius:4px;font-family:inherit;font-size:14px;color:var(--t1);background:#fff}
+.crm-field input:focus,.crm-field select:focus{border-color:var(--green);outline:none}
+.crm-field .crm-hint{font-size:10px;color:var(--t2);margin-top:2px;font-style:italic}
+.crm-closing{display:none;background:linear-gradient(135deg,#F0FFF4,#EBF5FB);border-radius:10px;padding:28px;text-align:center;margin:20px 0}
+.crm-closing.active{display:block}
+.crm-closing h3{font-size:20px;color:var(--dark);margin-bottom:8px}
+.crm-closing p{font-size:14px;color:var(--t2);line-height:1.6}
+.crm-closing .crm-firm{color:var(--green);font-weight:800}
+.crm-badge{display:inline-block;background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:4px 14px;border-radius:12px;margin-top:12px;letter-spacing:.5px}
+
+/* ==========================================
+   13. PRINT
    ========================================== */
 @media print{
   body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
@@ -345,6 +375,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
   .fpsl-grid{grid-template-columns:1fr}
   .btn-primary,.btn-back,.btn-dark,.btn-gold{min-height:48px;font-size:14px}
   .pillar-grid{grid-template-columns:1fr!important}
+  .crm-row{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -384,10 +415,10 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
     <div class="hero-us">US<span class="us-accent"></span></div>
     <div class="hero-value">Market Access. <span class="green">Shariah-First.</span></div>
     <div class="hero-products">
-      <span class="hp">Shariah Margin</span>
-      <span class="hp">Shariah Options</span>
-      <span class="hp">Shariah Short Selling</span>
-      <span class="hp">Shariah FPSL</span>
+      <span class="hp">Margin</span>
+      <span class="hp">Options</span>
+      <span class="hp">Short Selling</span>
+      <span class="hp">FPSL</span>
     </div>
     <div class="hero-powered-sm">Powered by Awaed</div>
     <div class="trust-bar">
@@ -746,6 +777,115 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
       <tr class="burden-total"><td><b>Combined Potential</b></td><td></td><td style="color:var(--green);font-weight:800;font-size:15px">$345K &ndash; $590K / year</td></tr>
     </tbody>
   </table>
+
+  <!-- CUSTOM REVENUE MODEL -->
+  <div class="crm-cta" id="crmCta" onclick="showCrmPanel()">
+    <h3>&#9733; Want a Custom Revenue Model Built for Your Firm?</h3>
+    <p>Share your numbers &mdash; current or aspirational &mdash; and our team will build a personalized projection.</p>
+  </div>
+
+  <div class="crm-panel" id="crmPanel">
+    <div class="nda-box" id="ndaBox">
+      <h4>&#9670; Our Commitment to Your Data</h4>
+      <div class="nda-text">
+        <b>Awaed Capital Company (CMA License 03-22247)</b> commits to treating all information you provide through this form as strictly confidential. Your firm&rsquo;s financial data, projections, and business details will not be disclosed, shared, or made available to any third party &mdash; including other Hive partners, affiliates, or external entities &mdash; without your express written consent.<br><br>
+        This information will be used solely by the Hive partnerships team to prepare a custom revenue model tailored to your firm. The resulting model will be delivered directly to you and retained only for the purpose of ongoing partnership discussions.<br><br>
+        This confidentiality commitment remains in effect for <b>two (2) years</b> from the date of acceptance, regardless of whether a partnership agreement is executed.
+      </div>
+      <div class="nda-accept-row">
+        <input type="checkbox" id="ndaAccept" style="margin-top:3px;accent-color:var(--green)" onchange="checkNdaAccept()">
+        <label for="ndaAccept">I acknowledge and accept Awaed Capital&rsquo;s confidentiality commitment regarding the data I provide below.</label>
+      </div>
+      <div style="text-align:center">
+        <button class="btn-primary" id="btnNdaAccept" onclick="acceptNda()" disabled style="opacity:.5">Accept &amp; Continue</button>
+      </div>
+    </div>
+
+    <div class="crm-form" id="crmForm" style="display:none">
+      <h4>Tell Us About Your Vision</h4>
+      <p class="crm-sub">No wrong answers here. Enter where you are today, where you want to be, or a mix of both. We model reality and ambition equally well.</p>
+
+      <div class="crm-row">
+        <div class="crm-field">
+          <label for="crm_accounts">Active Accounts (Year 1)</label>
+          <input type="number" id="crm_accounts" placeholder="e.g., 2000" min="0">
+          <div class="crm-hint">Current client base or growth target</div>
+        </div>
+        <div class="crm-field">
+          <label for="crm_balance">Average Account Balance (USD)</label>
+          <input type="number" id="crm_balance" placeholder="e.g., 15000" min="0">
+          <div class="crm-hint">Approximate per-client investment size</div>
+        </div>
+      </div>
+
+      <div class="crm-row">
+        <div class="crm-field">
+          <label for="crm_eq_trades">Equity Trades / Account / Month</label>
+          <input type="number" id="crm_eq_trades" placeholder="e.g., 5" min="0">
+          <div class="crm-hint">How actively will your clients trade equities?</div>
+        </div>
+        <div class="crm-field">
+          <label for="crm_opt_contracts">Options Contracts / Account / Month</label>
+          <input type="number" id="crm_opt_contracts" placeholder="e.g., 2" min="0">
+          <div class="crm-hint">Expected options activity &mdash; 0 is fine</div>
+        </div>
+      </div>
+
+      <div class="crm-row">
+        <div class="crm-field">
+          <label for="crm_margin_pct">Expected Margin Adoption (%)</label>
+          <input type="number" id="crm_margin_pct" placeholder="e.g., 25" min="0" max="100">
+          <div class="crm-hint">% of accounts using Shariah margin</div>
+        </div>
+        <div class="crm-field">
+          <label for="crm_fpsl_pct">Expected FPSL Opt-in (%)</label>
+          <input type="number" id="crm_fpsl_pct" placeholder="e.g., 40" min="0" max="100">
+          <div class="crm-hint">% of accounts opting into securities lending</div>
+        </div>
+      </div>
+
+      <div class="crm-row">
+        <div class="crm-field">
+          <label for="crm_fx_volume">Monthly FX Volume (USD)</label>
+          <input type="number" id="crm_fx_volume" placeholder="e.g., 5000000" min="0">
+          <div class="crm-hint">Cross-border conversion volume per month</div>
+        </div>
+        <div class="crm-field">
+          <label for="crm_timeline">Target Launch</label>
+          <select id="crm_timeline">
+            <option value="">When do you want to go live?</option>
+            <option value="ASAP">As soon as possible</option>
+            <option value="Q2 2026">Q2 2026</option>
+            <option value="Q3 2026">Q3 2026</option>
+            <option value="Q4 2026">Q4 2026</option>
+            <option value="2027">2027</option>
+            <option value="Exploring">Just exploring for now</option>
+          </select>
+          <div class="crm-hint">No commitment &mdash; helps us prioritize</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:16px">
+        <div class="crm-field">
+          <label for="crm_notes">Anything Else We Should Know?</label>
+          <input type="text" id="crm_notes" placeholder="Special requirements, target segments, regulatory context..." maxlength="500">
+          <div class="crm-hint">Optional &mdash; the more context, the sharper the model</div>
+        </div>
+      </div>
+
+      <div style="text-align:center">
+        <button class="btn-primary" onclick="submitCrm()">Request My Custom Revenue Model <span>&rarr;</span></button>
+      </div>
+      <div id="crmError" style="display:none;color:var(--red);font-size:12px;font-weight:600;margin-top:8px;padding:8px 12px;background:#FFF5F5;border-radius:4px;text-align:center"></div>
+    </div>
+  </div>
+
+  <div class="crm-closing" id="crmClosing">
+    <h3>We See the Opportunity</h3>
+    <p>The numbers you&rsquo;ve shared tell us something important &mdash; <span class="crm-firm" id="crmFirmName">your firm</span> is thinking at the right scale, asking the right questions, and exploring the right market at exactly the right time.</p>
+    <p style="margin-top:10px">Our partnerships team is already on it. Expect a <b>personalized revenue model</b> tailored to your projections within <b>48 hours</b>, delivered directly to <span class="crm-firm" id="crmEmail">your inbox</span>.</p>
+    <div class="crm-badge">Priority Partner Pipeline</div>
+  </div>
 
   <!-- COMPLIANCE BURDEN -->
   <div class="sub-hdr">What You Don&rsquo;t Have to Build</div>
@@ -1158,7 +1298,90 @@ function dismissB2C(confirmed) {
 }
 
 // ============================================================
-// 2c. INTELLIGENCE ENGINE
+// 2c. CUSTOM REVENUE MODEL
+// ============================================================
+function showCrmPanel() {
+  document.getElementById('crmCta').style.display = 'none';
+  document.getElementById('crmPanel').classList.add('active');
+  document.getElementById('ndaBox').scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function checkNdaAccept() {
+  var btn = document.getElementById('btnNdaAccept');
+  var checked = document.getElementById('ndaAccept').checked;
+  btn.disabled = !checked;
+  btn.style.opacity = checked ? '1' : '.5';
+}
+
+function acceptNda() {
+  if (!document.getElementById('ndaAccept').checked) return;
+  document.getElementById('ndaBox').style.display = 'none';
+  document.getElementById('crmForm').style.display = 'block';
+  document.getElementById('crmForm').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function submitCrm() {
+  var accounts = document.getElementById('crm_accounts').value;
+  var balance = document.getElementById('crm_balance').value;
+  var errEl = document.getElementById('crmError');
+  if (!accounts || parseInt(accounts) <= 0) {
+    errEl.textContent = 'Please enter your expected active accounts.';
+    errEl.style.display = 'block';
+    return;
+  }
+  errEl.style.display = 'none';
+
+  var firmName = document.getElementById('w_firm').value || 'Your firm';
+  var email = document.getElementById('w_email').value || '';
+
+  var payload = {
+    _subject: 'Hive Custom Revenue Model Request — ' + firmName,
+    _template: 'table',
+    _captcha: 'false',
+    action: 'CUSTOM_REVENUE_MODEL',
+    firm: firmName,
+    contact_name: document.getElementById('w_name').value || '',
+    contact_email: email,
+    nda_accepted: 'YES — ' + new Date().toISOString(),
+    active_accounts_y1: accounts,
+    avg_balance_usd: balance || 'Not specified',
+    equity_trades_per_account_month: document.getElementById('crm_eq_trades').value || 'Not specified',
+    options_contracts_per_account_month: document.getElementById('crm_opt_contracts').value || 'Not specified',
+    margin_adoption_pct: (document.getElementById('crm_margin_pct').value || 'Not specified') + (document.getElementById('crm_margin_pct').value ? '%' : ''),
+    fpsl_optin_pct: (document.getElementById('crm_fpsl_pct').value || 'Not specified') + (document.getElementById('crm_fpsl_pct').value ? '%' : ''),
+    monthly_fx_volume_usd: document.getElementById('crm_fx_volume').value || 'Not specified',
+    target_launch: document.getElementById('crm_timeline').value || 'Not specified',
+    additional_notes: document.getElementById('crm_notes').value || '',
+    country: document.getElementById('w_country').value || '',
+    integration_model: getModel(),
+    timestamp: new Date().toISOString()
+  };
+
+  var btn = document.querySelector('#crmForm .btn-primary');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  fetch('https://formsubmit.co/ajax/ali@awaed.co', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+    body: JSON.stringify(payload)
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) { showCrmClosing(firmName, email); })
+  .catch(function() { showCrmClosing(firmName, email); });
+}
+
+function showCrmClosing(firm, email) {
+  document.getElementById('crmPanel').style.display = 'none';
+  var closing = document.getElementById('crmClosing');
+  closing.classList.add('active');
+  document.getElementById('crmFirmName').textContent = firm;
+  if (email) document.getElementById('crmEmail').textContent = email;
+  closing.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+// ============================================================
+// 2d. INTELLIGENCE ENGINE
 // ============================================================
 var ITEM_DEPS = {3:[13], 12:[], 16:[19], 17:[]};
 var GCC_COUNTRIES = ['Saudi Arabia','UAE','Kuwait','Bahrain','Oman','Qatar'];
