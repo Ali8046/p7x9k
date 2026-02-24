@@ -42,12 +42,12 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 /* ==========================================
    3. STEP CONTAINER
    ========================================== */
-.step{display:none;max-width:880px;margin:0 auto;padding:32px 24px 48px}
+.step{display:none;max-width:1080px;margin:0 auto;padding:32px 24px 48px}
 .step.active{display:block;animation:fadeUp .45s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.step-hdr{margin-bottom:24px}
-.step-hdr h2{font-size:28px;font-weight:800;color:var(--dark);margin-bottom:4px}
-.step-hdr p{font-size:15px;color:var(--t2)}
+.step-hdr{margin-bottom:28px}
+.step-hdr h2{font-size:32px;font-weight:800;color:var(--dark);margin-bottom:6px}
+.step-hdr p{font-size:16px;color:var(--t2)}
 
 /* ==========================================
    4. BUTTONS
@@ -69,7 +69,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
    5. STEP 1: WELCOME / HERO
    ========================================== */
 .hero{text-align:center;padding:24px 0 0}
-.hero-logo{width:180px;height:auto;animation:logoIn .8s ease;border-radius:16px}
+.hero-logo{width:260px;height:auto;animation:logoIn .8s ease}
 @keyframes logoIn{from{opacity:0;transform:scale(.7) rotate(-10deg)}to{opacity:1;transform:scale(1) rotate(0)}}
 .hero-brand{font-size:52px;font-weight:900;color:var(--dark);letter-spacing:10px;margin:4px 0 2px}
 .hero-tagline{font-size:13px;color:var(--t2);text-transform:uppercase;letter-spacing:3px;margin-bottom:4px}
@@ -270,7 +270,23 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
    ========================================== */
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 @keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes stepPulse{0%,100%{box-shadow:0 0 0 4px rgba(39,174,96,.2)}50%{box-shadow:0 0 0 8px rgba(39,174,96,.1)}}
 .flash{animation:countUp .3s ease}
+.s-dot.active .s-num{animation:stepPulse 2s ease infinite}
+.nudge-box{padding:12px 16px;border-radius:var(--radius);font-size:13px;margin:12px 0;display:none;animation:fadeUp .3s ease}
+.nudge-info{background:#EBF5FB;border-left:3px solid var(--info);color:var(--navy)}
+.nudge-warn{background:#FFF8E7;border-left:3px solid var(--warn);color:var(--navy)}
+.nudge-good{background:#F0FFF4;border-left:3px solid var(--green);color:var(--dark)}
+.cat-progress{height:3px;background:#eee;border-radius:2px;margin-top:4px;overflow:hidden;flex:1;min-width:60px}
+.cat-progress-fill{height:100%;background:var(--green);border-radius:2px;transition:width .3s ease}
+.cat-count{font-size:11px;color:var(--t2);display:flex;align-items:center;gap:8px}
+.cap-row.auto-set{opacity:.6;pointer-events:none}
+.cap-row.auto-set .partner-select{background:#f5f5f5}
+.auto-tag{font-size:9px;font-weight:700;color:var(--info);text-transform:uppercase;letter-spacing:.3px;margin-left:6px}
+.proof-card{background:linear-gradient(135deg,#F0FFF4,#EBF5FB);border:2px solid var(--green);border-radius:var(--radius);padding:20px 24px;margin:20px auto;max-width:560px;text-align:center}
+.proof-card .proof-quote{font-size:15px;font-style:italic;color:var(--dark);margin-bottom:8px;line-height:1.5}
+.proof-card .proof-attr{font-size:12px;color:var(--t2);font-weight:600}
+.proof-metric{display:inline-block;background:var(--green);color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin:0 3px}
 
 /* ==========================================
    12. PRINT
@@ -289,11 +305,14 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
    ========================================== */
 @media(max-width:768px){
   .step{padding:20px 16px 40px}
+  .hero-logo{width:180px}
   .hero-brand{font-size:36px;letter-spacing:6px}
   .hero-metric-num{font-size:36px}
+  .step-hdr h2{font-size:24px}
   .welcome-card{padding:20px}
   .cap-row{grid-template-columns:1fr;gap:4px}
   .match-cell{flex-direction:row;justify-content:flex-start;gap:6px}
+  .partner-select{font-size:14px;padding:10px 12px;min-height:44px}
   .rev-cards{grid-template-columns:1fr}
   .shariah-grid{grid-template-columns:1fr}
   .absorbs-split{grid-template-columns:1fr}
@@ -304,6 +323,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
   .stepper-inner{overflow-x:auto;gap:4px}
   .s-lbl{font-size:8px}
   .fpsl-grid{grid-template-columns:1fr}
+  .btn-primary,.btn-back,.btn-dark,.btn-gold{min-height:48px;font-size:14px}
 }
 </style>
 </head>
@@ -328,35 +348,35 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 <!-- ============================================================ -->
 <section class="step active" id="step1">
   <div class="hero">
-    <img class="hero-logo" src="hive_logo.png" alt="Hive — Powered by Awaed" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='block'">
-    <div id="logoFallback" style="display:none;text-align:center">
-      <svg style="width:96px;height:auto" viewBox="0 0 120 110" xmlns="http://www.w3.org/2000/svg">
-        <g transform="translate(60,48)">
-          <polygon points="0,-11 9.53,-5.5 9.53,5.5 0,11 -9.53,5.5 -9.53,-5.5" fill="#27AE60"/>
-          <polygon points="0,-30.05 9.53,-24.55 9.53,-13.55 0,-8.05 -9.53,-13.55 -9.53,-24.55" fill="#273979"/>
-          <polygon points="16.5,-21.53 26.03,-16.03 26.03,-5.03 16.5,0.47 6.97,-5.03 6.97,-16.03" fill="#2C3E50"/>
-          <polygon points="16.5,0.47 26.03,5.97 26.03,16.97 16.5,22.47 6.97,16.97 6.97,5.97" fill="#273979"/>
-          <polygon points="0,8.95 9.53,14.45 9.53,25.45 0,30.95 -9.53,25.45 -9.53,14.45" fill="#2C3E50"/>
-          <polygon points="-16.5,0.47 -6.97,5.97 -6.97,16.97 -16.5,22.47 -26.03,16.97 -26.03,5.97" fill="#273979"/>
-          <polygon points="-16.5,-21.53 -6.97,-16.03 -6.97,-5.03 -16.5,0.47 -26.03,-5.03 -26.03,-16.03" fill="#2C3E50"/>
-        </g>
-      </svg>
-      <div class="hero-brand">HIVE</div>
-    </div>
+    <svg class="hero-logo" viewBox="0 0 126 148" xmlns="http://www.w3.org/2000/svg">
+      <!-- Honeycomb H in Awaed colors -->
+      <polygon points="44.1,19 44.1,41 25,52 5.9,41 5.9,19 25,8" fill="#2C3E50"/>
+      <polygon points="44.1,63 44.1,85 25,96 5.9,85 5.9,63 25,52" fill="#27AE60"/>
+      <polygon points="44.1,107 44.1,129 25,140 5.9,129 5.9,107 25,96" fill="#3DDC84"/>
+      <polygon points="82.1,63 82.1,85 63,96 43.9,85 43.9,63 63,52" fill="#27AE60" opacity=".85"/>
+      <polygon points="120.1,19 120.1,41 101,52 81.9,41 81.9,19 101,8" fill="#2C3E50"/>
+      <polygon points="120.1,63 120.1,85 101,96 81.9,85 81.9,63 101,52" fill="#27AE60"/>
+      <polygon points="120.1,107 120.1,129 101,140 81.9,129 81.9,107 101,96" fill="#3DDC84"/>
+    </svg>
+    <div class="hero-brand">HIVE</div>
     <div class="hero-tagline">Partner Configurator</div>
     <div class="hero-org">Powered by Awaed</div>
     <hr class="gold-rule">
     <div class="trust-bar">
       <span class="trust-badge">CMA Licensed 03-22247</span>
-      <span class="trust-badge">SIPC Member</span>
+      <span class="trust-badge">SEC Registered</span>
+      <span class="trust-badge">FINRA Member</span>
       <span class="trust-badge">SSB Governed</span>
       <span class="trust-badge">AAOIFI Compliant</span>
-      <span class="trust-badge">SOC 2 Type II</span>
-      <span class="trust-badge">FINRA Reporting</span>
+      <span class="trust-badge">Self-Clearing</span>
     </div>
     <div class="hero-metric-box">
-      <div class="hero-metric-num">39</div>
-      <div class="hero-metric-text">capabilities ready on day one &mdash; more than any platform in the GCC</div>
+      <div class="hero-metric-num">56</div>
+      <div class="hero-metric-text">capabilities across 9 categories &mdash; more than any platform in the GCC</div>
+    </div>
+    <div class="proof-card">
+      <div class="proof-quote">&ldquo;Awaed Capital — the fastest-growing broker in the region — runs on the Hive engine.&rdquo;</div>
+      <div class="proof-attr">Live production &middot; <span class="proof-metric">US Equities</span> <span class="proof-metric">Options</span> <span class="proof-metric">Shariah Suite</span></div>
     </div>
   </div>
 
@@ -473,9 +493,11 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 
   <div class="quick-bar">
     <button class="btn-outline btn-sm" onclick="selectAllMust()">&#10003; Select All as Must-Have</button>
+    <button class="btn-outline btn-sm" onclick="smartRecommend()">&#9733; Smart Recommend</button>
     <button class="btn-outline btn-sm" onclick="clearAllSelections()">&#10005; Clear All</button>
   </div>
 
+  <div id="nudgeArea"></div>
   <div id="capContainer"></div>
 
   <div class="btn-row">
@@ -709,7 +731,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
       <ul class="absorbs-list">
         <li>US broker-dealer registration (FINRA/SEC)</li>
         <li>Trade execution and clearing (self-clearing)</li>
-        <li>Custody and asset safekeeping (SIPC)</li>
+        <li>Custody and asset safekeeping (segregated accounts)</li>
         <li>AML, sanctions, trade surveillance</li>
         <li>All US regulatory reporting</li>
         <li>Shariah screening + SSB governance</li>
@@ -731,7 +753,15 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 <!-- ============================================================ -->
 <section class="step" id="step5">
   <div class="step-hdr" style="text-align:center">
-    <img src="hive_logo.png" alt="Hive" style="width:100px;height:auto;border-radius:10px;margin-bottom:8px" onerror="this.style.display='none'">
+    <svg style="width:80px;height:auto;margin-bottom:8px" viewBox="0 0 126 148" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="44.1,19 44.1,41 25,52 5.9,41 5.9,19 25,8" fill="#2C3E50"/>
+      <polygon points="44.1,63 44.1,85 25,96 5.9,85 5.9,63 25,52" fill="#27AE60"/>
+      <polygon points="44.1,107 44.1,129 25,140 5.9,129 5.9,107 25,96" fill="#3DDC84"/>
+      <polygon points="82.1,63 82.1,85 63,96 43.9,85 43.9,63 63,52" fill="#27AE60" opacity=".85"/>
+      <polygon points="120.1,19 120.1,41 101,52 81.9,41 81.9,19 101,8" fill="#2C3E50"/>
+      <polygon points="120.1,63 120.1,85 101,96 81.9,85 81.9,63 101,52" fill="#27AE60"/>
+      <polygon points="120.1,107 120.1,129 101,140 81.9,129 81.9,107 101,96" fill="#3DDC84"/>
+    </svg>
     <h2>Your Hive Partnership Brief</h2>
     <p>Personalized assessment based on your selections</p>
   </div>
@@ -764,6 +794,12 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
     <button class="btn-primary" onclick="window.print()">&#9113; Print as PDF</button>
     <button class="btn-dark" onclick="copySummaryText()">&#128203; Copy Summary</button>
     <button class="btn-gold" id="btnSchedule" onclick="scheduleCall()">&#128222; Schedule a Call</button>
+  </div>
+
+  <div class="proof-card" style="max-width:100%">
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:8px">Live Case Study</div>
+    <div class="proof-quote">&ldquo;Awaed Capital launched on the Hive engine and became the fastest-growing broker in the GCC. Full Shariah compliance, US equities, options, and FPSL — all live from day one.&rdquo;</div>
+    <div class="proof-attr" style="margin-top:8px"><span class="proof-metric">Live Production</span> <span class="proof-metric">Shariah-Compliant</span> <span class="proof-metric">Self-Clearing</span> <span class="proof-metric">Full Stack</span></div>
   </div>
 
   <!-- TIMELINE -->
@@ -844,7 +880,7 @@ var CAP_DATA = [
     {f:'Local Virtual IBANs (SAR)',s:'cond',n:'Requires Fully Disclosed'},
     {f:'FX Conversion',s:'np',n:'Partner responsibility'},
     {f:'Instant Buying Power',s:'live',n:''},
-    {f:'SIPC + Excess SIPC',s:'live',n:'Excess on demand'}
+    {f:'Custody Protection',s:'live',n:'Segregated accounts'}
   ]},
   {cat:'How You Connect',icon:'#3498DB',items:[
     {f:'REST + JSON API',s:'live',n:''},
@@ -912,6 +948,9 @@ var STATUS_MAP = {
 var currentStep = 1;
 var maxVisited = 1;
 var briefSent = false;
+var sessionStart = Date.now();
+var stepTimes = {1:0,2:0,3:0,4:0,5:0};
+var stepEnteredAt = Date.now();
 
 // ============================================================
 // 2. STEP NAVIGATION
@@ -919,17 +958,20 @@ var briefSent = false;
 function goTo(n) {
   if (n < 1 || n > 5) return;
   if (n > maxVisited + 1) return;
+  stepTimes[currentStep] += (Date.now() - stepEnteredAt);
   var prev = document.getElementById('step' + currentStep);
   var next = document.getElementById('step' + n);
   prev.classList.remove('active');
   next.classList.add('active');
   currentStep = n;
+  stepEnteredAt = Date.now();
   if (n > maxVisited) maxVisited = n;
   updateStepper();
   window.scrollTo({top: 0, behavior: 'smooth'});
+  if (n === 2) applyIntelligence();
   if (n === 3) updateContextBanner();
   if (n === 5) { animateSummaryRing(); sendBriefToHive(); }
-  document.title = 'Step ' + n + '/5 — Hive Partner Configurator';
+  document.title = 'Step ' + n + '/5 \u2014 Hive Partner Configurator';
   saveProgress();
 }
 
@@ -957,7 +999,181 @@ function validateAndProceed() {
 }
 
 // ============================================================
-// 2b. AUTO-SEND BRIEF TO ali@awaed.co
+// 2b. INTELLIGENCE ENGINE
+// ============================================================
+var ITEM_DEPS = {3:[13], 12:[], 16:[19], 17:[]};
+var GCC_COUNTRIES = ['Saudi Arabia','UAE','Kuwait','Bahrain','Oman','Qatar'];
+
+function getModel() {
+  var m = ''; document.querySelectorAll('input[name="w_model"]').forEach(function(r){if(r.checked)m=r.value}); return m;
+}
+
+function applyIntelligence() {
+  var model = getModel();
+  var interest = document.getElementById('w_interest').value;
+  var country = document.getElementById('w_country').value;
+  var isGCC = GCC_COUNTRIES.indexOf(country) !== -1;
+  var nudges = [];
+  var catOrder = [0,1,2,3,4,5,6,7,8];
+
+  if (model === 'API-First') {
+    autoSetCategoryItems(8, 'not_needed', 'Auto-set: API-First model');
+    nudges.push({type:'info', text:'Since you selected <b>API-First</b>, white-label branding options have been set to Not Needed. You can override any of them.'});
+  }
+  if (interest === 'Trading Only') {
+    autoSetCategoryItems(8, 'not_needed', 'Auto-set: Trading API Only');
+    catOrder = [0,1,4,5,2,3,6,7,8];
+    nudges.push({type:'info', text:'Optimized for <b>Trading API Only</b> \u2014 trading and connectivity categories shown first.'});
+  }
+  if (interest === 'Shariah Suite') {
+    catOrder = [7,0,1,2,6,3,4,5,8];
+    nudges.push({type:'good', text:'Configured for <b>Shariah-Compliant Suite</b> \u2014 Shariah Governance shown first. Hive is the only platform with native Shariah margin, options, FPSL, and short selling.'});
+  }
+  if (interest === 'Full Brokerage') {
+    catOrder = [0,1,2,8,3,4,5,6,7];
+  }
+  if (!isGCC && country) {
+    nudges.push({type:'info', text:'Some features like <b>Local Virtual IBANs (SAR)</b> are GCC-specific. We\u2019ve kept them visible in case you want them for GCC end-clients.'});
+  }
+
+  reorderCategories(catOrder);
+  showNudges(nudges);
+}
+
+function autoSetCategoryItems(catIdx, value, reason) {
+  var startIdx = 0;
+  for (var i = 0; i < catIdx; i++) startIdx += CAP_DATA[i].items.length;
+  var count = CAP_DATA[catIdx].items.length;
+  for (var j = startIdx; j < startIdx + count; j++) {
+    if (allSelects[j] && !allSelects[j].value) {
+      allSelects[j].value = value;
+      updateMatch(allSelects[j]);
+      var row = allSelects[j].closest('.cap-row');
+      if (row && value === 'not_needed') {
+        row.classList.add('auto-set');
+        var existing = row.querySelector('.auto-tag');
+        if (!existing) {
+          var tag = document.createElement('span');
+          tag.className = 'auto-tag';
+          tag.textContent = reason || 'Auto';
+          row.querySelector('div').appendChild(tag);
+        }
+      }
+    }
+  }
+}
+
+function checkDependencies(changedIdx) {
+  var deps = ITEM_DEPS[changedIdx];
+  if (!deps) return;
+  var parentVal = allSelects[changedIdx].value;
+  deps.forEach(function(depIdx) {
+    if (parentVal === 'not_needed' && allSelects[depIdx]) {
+      allSelects[depIdx].value = 'not_needed';
+      updateMatch(allSelects[depIdx]);
+      var row = allSelects[depIdx].closest('.cap-row');
+      if (row) {
+        row.classList.add('auto-set');
+        var parentFeat = allSelects[changedIdx].closest('.cap-row').querySelector('.cap-feature').textContent;
+        var existing = row.querySelector('.auto-tag');
+        if (existing) existing.remove();
+        var tag = document.createElement('span');
+        tag.className = 'auto-tag';
+        tag.textContent = 'Linked: ' + parentFeat + ' = Not Needed';
+        row.querySelector('div').appendChild(tag);
+      }
+    } else if (parentVal && parentVal !== 'not_needed' && allSelects[depIdx]) {
+      var row2 = allSelects[depIdx].closest('.cap-row');
+      if (row2) { row2.classList.remove('auto-set'); var t = row2.querySelector('.auto-tag'); if (t) t.remove(); }
+    }
+  });
+}
+
+function reorderCategories(order) {
+  var container = document.getElementById('capContainer');
+  var cats = [];
+  for (var i = 0; i < order.length; i++) {
+    var el = document.getElementById('cat_' + order[i]);
+    if (el) cats.push(el);
+  }
+  cats.forEach(function(c, i) {
+    container.appendChild(c);
+    if (i === 0) c.classList.add('open');
+  });
+}
+
+function showNudges(nudges) {
+  var area = document.getElementById('nudgeArea');
+  area.innerHTML = '';
+  nudges.forEach(function(n) {
+    var div = document.createElement('div');
+    div.className = 'nudge-box nudge-' + n.type;
+    div.style.display = 'block';
+    div.innerHTML = n.text;
+    area.appendChild(div);
+  });
+}
+
+function checkSmartNudges() {
+  var area = document.getElementById('nudgeArea');
+  var existing = area.querySelectorAll('.nudge-dynamic');
+  existing.forEach(function(e) { e.remove(); });
+
+  var mustD1Count = 0, gapCount = 0, totalSelected = 0;
+  allSelects.forEach(function(s) {
+    if (!s.value) return;
+    totalSelected++;
+    if (s.value === 'must_d1') mustD1Count++;
+    var m = computeMatch(s.getAttribute('data-hive'), s.value);
+    if (m.cls === 'gap') gapCount++;
+  });
+
+  if (mustD1Count > 30 && totalSelected > 35) {
+    var d = document.createElement('div');
+    d.className = 'nudge-box nudge-info nudge-dynamic';
+    d.style.display = 'block';
+    d.innerHTML = '<b>Tip:</b> You\u2019ve marked ' + mustD1Count + ' capabilities as Must-Have Day 1. Consider moving some to <b>Phase 2</b> \u2014 Hive\u2019s team can propose a phased rollout that gets you live faster.';
+    area.appendChild(d);
+  }
+
+  if (gapCount > 3) {
+    var d2 = document.createElement('div');
+    d2.className = 'nudge-box nudge-good nudge-dynamic';
+    d2.style.display = 'block';
+    d2.innerHTML = '<b>' + gapCount + ' gaps identified</b> \u2014 this is normal. Hive\u2019s engineering team has a track record of addressing custom requirements in 4\u20138 weeks. These gaps become your joint workshop agenda.';
+    area.appendChild(d2);
+  }
+}
+
+function smartRecommend() {
+  var interest = document.getElementById('w_interest').value;
+  allSelects.forEach(function(s) {
+    var hive = s.getAttribute('data-hive');
+    var tag = s.getAttribute('data-tag');
+    if (interest === 'Trading Only') {
+      if (hive === 'live' || hive === 'beta') s.value = 'must_d1';
+      else if (hive === 'h1') s.value = 'must_p2';
+      else s.value = 'not_needed';
+      var catEl = s.closest('.cap-cat');
+      if (catEl && catEl.id === 'cat_8') s.value = 'not_needed';
+    } else if (interest === 'Shariah Suite') {
+      if (hive === 'live') s.value = 'must_d1';
+      else if (hive === 'beta' || hive === 'h1') s.value = 'must_p2';
+      else if (hive === 'custom') s.value = 'nice';
+      else s.value = 'not_needed';
+    } else {
+      if (hive === 'live') s.value = 'must_d1';
+      else if (hive === 'beta' || hive === 'h1') s.value = 'must_p2';
+      else if (hive === 'custom') s.value = 'nice';
+      else s.value = 'not_needed';
+    }
+    updateMatch(s);
+  });
+  checkSmartNudges();
+}
+
+// ============================================================
+// 2c. AUTO-SEND BRIEF TO ali@awaed.co
 // ============================================================
 function sendBriefToHive() {
   if (briefSent) return;
@@ -968,8 +1184,13 @@ function sendBriefToHive() {
   statusEl.style.color = 'var(--info)';
   statusEl.textContent = 'Sending your partnership brief to Hive...';
 
+  stepTimes[currentStep] += (Date.now() - stepEnteredAt);
+  var totalSec = Math.round((Date.now() - sessionStart) / 1000);
+  var stepSummary = 'Total: ' + totalSec + 's | ';
+  for (var st = 1; st <= 5; st++) stepSummary += 'S' + st + ':' + Math.round(stepTimes[st]/1000) + 's ';
+
   var payload = {
-    _subject: 'Hive Partnership Brief — ' + DOC_ID + ' — ' + (document.getElementById('w_firm').value || 'Partner'),
+    _subject: 'Hive Partnership Brief \u2014 ' + DOC_ID + ' \u2014 ' + (document.getElementById('w_firm').value || 'Partner'),
     _template: 'table',
     _captcha: 'false',
     doc_id: DOC_ID,
@@ -980,13 +1201,14 @@ function sendBriefToHive() {
     phone: document.getElementById('w_phone').value,
     title_role: document.getElementById('w_title').value,
     country: document.getElementById('w_country').value,
-    integration_model: (function() { var m=''; document.querySelectorAll('input[name="w_model"]').forEach(function(r){if(r.checked)m=r.value}); return m; })(),
+    integration_model: getModel(),
     primary_interest: document.getElementById('w_interest').value,
     fit_score: document.getElementById('summaryPct').textContent,
     ready_count: document.getElementById('ssReady').textContent,
     in_progress_count: document.getElementById('ssProg').textContent,
     gap_count: document.getElementById('ssGap').textContent,
     not_needed_count: document.getElementById('ssNA').textContent,
+    engagement: stepSummary,
     full_brief: collectText()
   };
 
@@ -1017,9 +1239,7 @@ function sendBriefToHive() {
 }
 
 function scheduleCall() {
-  var firm = encodeURIComponent(document.getElementById('w_firm').value || 'Partner');
-  var email = encodeURIComponent(document.getElementById('w_email').value || '');
-  var subj = encodeURIComponent('Schedule Call — Hive Partnership — ' + DOC_ID);
+  var subj = encodeURIComponent('Schedule Call \u2014 Hive Partnership \u2014 ' + DOC_ID);
   var body = encodeURIComponent('Hi Ali,\n\nI completed the Hive Partner Configurator (Brief ID: ' + DOC_ID + ').\n\nI would like to schedule a call to discuss the partnership opportunity.\n\nBest regards,\n' + (document.getElementById('w_name').value || ''));
   window.open('mailto:ali@awaed.co?subject=' + subj + '&body=' + body);
 }
@@ -1055,7 +1275,7 @@ function renderCategories() {
     div.innerHTML = '<div class="cat-hdr" onclick="toggleCat(' + ci + ')">' +
       '<span class="cat-icon" style="background:' + cat.icon + '">' + (ci + 1) + '</span>' +
       '<span class="cat-name">' + cat.cat + '</span>' +
-      '<span class="cat-count">' + count + ' features &middot; <span id="catSel_' + ci + '">0</span> selected</span>' +
+      '<span class="cat-count"><span id="catSel_' + ci + '">0</span>/' + count + ' <div class="cat-progress"><div class="cat-progress-fill" id="catProg_' + ci + '" style="width:0%"></div></div></span>' +
       '<span class="cat-arrow">&#9660;</span></div>' +
       '<div class="cat-body" id="catBody_' + ci + '"></div>';
     container.appendChild(div);
@@ -1110,15 +1330,23 @@ function computeMatch(s, p) {
 }
 
 function updateMatch(sel) {
-  var i = sel.getAttribute('data-idx');
+  var i = parseInt(sel.getAttribute('data-idx'));
   var s = sel.getAttribute('data-hive');
   var p = sel.value;
   var m = computeMatch(s, p);
   var cell = document.getElementById('mc_' + i);
   cell.innerHTML = '<span class="match-icon" style="color:' + m.color + '">' + m.icon + '</span>' +
     '<span class="match-label" style="color:' + m.color + '">' + m.label + '</span>';
+  cell.classList.add('flash');
+  setTimeout(function() { cell.classList.remove('flash'); }, 300);
+  if (p && p !== 'not_needed') {
+    var row = sel.closest('.cap-row');
+    if (row) { row.classList.remove('auto-set'); var t = row.querySelector('.auto-tag'); if (t) t.remove(); }
+  }
+  checkDependencies(i);
   updateSummaryBar();
   updateCatCounts();
+  checkSmartNudges();
 }
 
 function updateSummaryBar() {
@@ -1154,6 +1382,8 @@ function updateCatCounts() {
     });
     var el = document.getElementById('catSel_' + ci);
     if (el) el.textContent = selected;
+    var prog = document.getElementById('catProg_' + ci);
+    if (prog) prog.style.width = Math.round(selected / cat.items.length * 100) + '%';
   });
 }
 
@@ -1395,7 +1625,17 @@ document.getElementById('overlay').addEventListener('click', function(e) { if (e
 // ============================================================
 // 9a. LOCAL STORAGE SAVE/RESTORE
 // ============================================================
-var STORAGE_KEY = 'hive_configurator_v1';
+var STORAGE_KEY = 'hive_cfg_';
+
+function getStorageKey() {
+  var email = document.getElementById('w_email').value.trim().toLowerCase();
+  if (email) {
+    var hash = 0;
+    for (var i = 0; i < email.length; i++) { hash = ((hash << 5) - hash) + email.charCodeAt(i); hash |= 0; }
+    return STORAGE_KEY + Math.abs(hash);
+  }
+  return STORAGE_KEY + 'anon';
+}
 
 function saveProgress() {
   try {
@@ -1408,25 +1648,30 @@ function saveProgress() {
       country: document.getElementById('w_country').value,
       interest: document.getElementById('w_interest').value,
       consent: document.getElementById('w_consent').checked,
-      model: '',
+      model: getModel(),
       selections: [],
       step: currentStep,
       maxVisited: maxVisited,
+      stepTimes: stepTimes,
       savedAt: new Date().toISOString()
     };
-    document.querySelectorAll('input[name="w_model"]').forEach(function(r) { if (r.checked) data.model = r.value; });
     allSelects.forEach(function(s) { data.selections.push(s.value); });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    localStorage.setItem(getStorageKey(), JSON.stringify(data));
+    localStorage.setItem(STORAGE_KEY + 'last', getStorageKey());
   } catch(e) {}
 }
 
 function restoreProgress() {
   try {
-    var raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return false;
+    var lastKey = localStorage.getItem(STORAGE_KEY + 'last');
+    var raw = lastKey ? localStorage.getItem(lastKey) : null;
+    if (!raw) {
+      raw = localStorage.getItem(STORAGE_KEY + 'anon');
+      if (!raw) return false;
+    }
     var data = JSON.parse(raw);
     var savedAge = new Date() - new Date(data.savedAt);
-    if (savedAge > 7 * 24 * 60 * 60 * 1000) { localStorage.removeItem(STORAGE_KEY); return false; }
+    if (savedAge > 30 * 24 * 60 * 60 * 1000) { localStorage.removeItem(lastKey || STORAGE_KEY + 'anon'); return false; }
     document.getElementById('w_firm').value = data.firm || '';
     document.getElementById('w_name').value = data.name || '';
     document.getElementById('w_email').value = data.email || '';
@@ -1438,19 +1683,27 @@ function restoreProgress() {
     if (data.model) {
       document.querySelectorAll('input[name="w_model"]').forEach(function(r) { if (r.value === data.model) r.checked = true; });
     }
+    if (data.stepTimes) stepTimes = data.stepTimes;
     if (data.selections && data.selections.length === allSelects.length) {
       data.selections.forEach(function(v, i) {
         if (v) { allSelects[i].value = v; updateMatch(allSelects[i]); }
       });
     }
-    return data.step > 1;
+    return data.step > 1 ? data : false;
   } catch(e) { return false; }
 }
 
-// Auto-save when user types or changes selections
 document.addEventListener('input', function(e) {
   if (e.target.closest('.welcome-card') || e.target.classList.contains('partner-select')) {
     saveProgress();
+  }
+});
+
+window.addEventListener('beforeunload', function(e) {
+  saveProgress();
+  if (currentStep > 1 && currentStep < 5 && !briefSent) {
+    e.preventDefault();
+    e.returnValue = '';
   }
 });
 
@@ -1475,20 +1728,30 @@ renderCategories();
 renderScorecard();
 updateSummaryBar();
 
-var hasProgress = restoreProgress();
-if (hasProgress) {
+var totalItems = 0;
+CAP_DATA.forEach(function(c) { totalItems += c.items.length; });
+document.getElementById('msPend').textContent = totalItems;
+
+var savedData = restoreProgress();
+if (savedData) {
+  var name = savedData.name || '';
+  var firm = savedData.firm || '';
   var resumeBar = document.createElement('div');
   resumeBar.id = 'resumeBar';
   resumeBar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:var(--dark);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:12px;z-index:200;box-shadow:0 -4px 16px rgba(0,0,0,.15)';
-  resumeBar.innerHTML = '<span style="font-size:13px">You have a saved session. Pick up where you left off?</span>' +
+  var greeting = name ? 'Welcome back, <b>' + esc(name) + '</b>' + (firm ? ' from <b>' + esc(firm) + '</b>' : '') + '.' : 'You have a saved session.';
+  var stepLabel = ['','Welcome','Capabilities','Advantage','Economics','Summary'][savedData.step] || '';
+  resumeBar.innerHTML = '<span style="font-size:13px">' + greeting + ' You were on <b>Step ' + savedData.step + ': ' + stepLabel + '</b>.</span>' +
     '<button onclick="dismissResume()" style="background:none;color:#aaa;border:1px solid #555;padding:6px 14px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:12px">Start Fresh</button>' +
-    '<button onclick="resumeSession()" style="background:var(--green);color:#fff;border:none;padding:6px 14px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700">Resume</button>';
+    '<button onclick="resumeSession()" style="background:var(--green);color:#fff;border:none;padding:6px 14px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700">Resume \u2192</button>';
   document.body.appendChild(resumeBar);
 }
 
 function resumeSession() {
+  var lastKey = localStorage.getItem(STORAGE_KEY + 'last');
   try {
-    var data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    var raw = lastKey ? localStorage.getItem(lastKey) : localStorage.getItem(STORAGE_KEY + 'anon');
+    var data = JSON.parse(raw);
     if (data && data.step > 1) {
       maxVisited = data.maxVisited || data.step;
       goTo(data.step);
@@ -1499,9 +1762,11 @@ function resumeSession() {
 }
 
 function dismissResume() {
-  localStorage.removeItem(STORAGE_KEY);
-  var bar = document.getElementById('resumeBar');
-  if (bar) bar.remove();
+  var lastKey = localStorage.getItem(STORAGE_KEY + 'last');
+  if (lastKey) localStorage.removeItem(lastKey);
+  localStorage.removeItem(STORAGE_KEY + 'anon');
+  localStorage.removeItem(STORAGE_KEY + 'last');
+  location.reload();
 }
 
 document.addEventListener('keydown', function(e) {
