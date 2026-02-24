@@ -302,11 +302,6 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 .b2c-box h3{font-size:20px;color:var(--dark);margin-bottom:8px}
 .b2c-box p{font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:16px}
 .b2c-box .b2c-icon{font-size:48px;margin-bottom:12px}
-.email-verify-row{display:flex;gap:8px;align-items:center;margin-top:8px}
-.email-verify-row input{width:120px;text-align:center;font-size:18px;font-weight:700;letter-spacing:4px;padding:10px;border:2px solid var(--rule);border-radius:6px;font-family:inherit}
-.email-verify-row input:focus{border-color:var(--green);outline:none}
-.verify-status{font-size:12px;font-weight:600;margin-top:6px;min-height:18px}
-.verify-ok{color:var(--green)}.verify-fail{color:var(--red)}.verify-pending{color:var(--info)}
 
 /* ==========================================
    12. PRINT
@@ -350,8 +345,6 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
   .fpsl-grid{grid-template-columns:1fr}
   .btn-primary,.btn-back,.btn-dark,.btn-gold{min-height:48px;font-size:14px}
   .pillar-grid{grid-template-columns:1fr!important}
-  .email-verify-row{flex-direction:column;align-items:stretch}
-  .email-verify-row input{width:100%}
 }
 </style>
 </head>
@@ -421,19 +414,6 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
       <label for="w_email">Business Email <span style="color:var(--red)">*</span></label>
       <input type="email" id="w_email" placeholder="you@company.com" maxlength="120" autocomplete="email" required onblur="checkEmailDomain()">
       <div id="emailDomainWarn" style="display:none;font-size:11px;color:var(--warn);margin-top:4px;padding:6px 10px;background:#FFF8E7;border-radius:4px"></div>
-      <div id="emailVerifyArea" style="display:none;margin-top:8px">
-        <div style="font-size:12px;color:var(--t2);margin-bottom:6px;line-height:1.5">
-          <label for="verifyCode">Click <b>Verify</b> — we'll send a 6-digit code to your email.</label>
-        </div>
-        <div class="email-verify-row">
-          <input type="text" id="verifyCode" maxlength="6" placeholder="------" oninput="checkVerifyCode()" aria-label="Verification code">
-          <button class="btn-outline btn-sm" id="btnSendCode" onclick="sendVerificationCode()">Verify</button>
-        </div>
-        <div class="verify-status" id="verifyStatus"></div>
-        <div id="skipVerifyLink" style="display:none;margin-top:6px">
-          <a href="#" onclick="skipVerification();return false" style="font-size:11px;color:var(--t2);text-decoration:underline">Skip — verify during follow-up call</a>
-        </div>
-      </div>
     </div>
     <div class="form-row">
       <label for="w_phone">Phone (with country code)</label>
@@ -1114,9 +1094,6 @@ function validateAndProceed() {
     if (isConsumer && !b2cConfirmed) {
       errors.push('Personal email detected. Please use a business email or <a href="#" onclick="showB2CModal();return false" style="color:var(--green);font-weight:700">confirm your institutional role</a>');
     }
-    if (!emailVerified && !verifyCodeGenerated) {
-      checkEmailDomain();
-    }
   }
 
   if (errors.length > 0) {
@@ -1133,8 +1110,6 @@ function validateAndProceed() {
 // 2b. EMAIL DOMAIN VALIDATION & VERIFICATION
 // ============================================================
 var CONSUMER_DOMAINS = ['gmail.com','yahoo.com','hotmail.com','outlook.com','live.com','aol.com','icloud.com','me.com','mail.com','protonmail.com','proton.me','zoho.com','yandex.com','gmx.com','inbox.com','fastmail.com','tutanota.com','mailinator.com','guerrillamail.com','tempmail.com','msn.com','att.net','comcast.net','verizon.net','sbcglobal.net','cox.net','charter.net'];
-var emailVerified = false;
-var verifyCodeGenerated = '';
 var b2cConfirmed = false;
 
 function checkEmailDomain() {
@@ -1142,15 +1117,12 @@ function checkEmailDomain() {
   if (!email || email.indexOf('@') === -1) return;
   var domain = email.split('@')[1];
   var warnEl = document.getElementById('emailDomainWarn');
-  var verifyArea = document.getElementById('emailVerifyArea');
 
   if (CONSUMER_DOMAINS.indexOf(domain) !== -1) {
     warnEl.style.display = 'block';
     warnEl.innerHTML = '&#9888; <b>' + esc(domain) + '</b> appears to be a personal email. This tool is for institutional partners (banks, brokers, capital market companies). Please use your business email, or <a href="#" onclick="showB2CModal();return false" style="color:var(--green);font-weight:700">confirm your institutional role</a>.';
-    verifyArea.style.display = 'block';
   } else {
     warnEl.style.display = 'none';
-    verifyArea.style.display = 'block';
   }
 }
 
@@ -1182,82 +1154,7 @@ function dismissB2C(confirmed) {
     document.getElementById('w_email').value = '';
     document.getElementById('w_email').focus();
     document.getElementById('emailDomainWarn').style.display = 'none';
-    document.getElementById('emailVerifyArea').style.display = 'none';
   }
-}
-
-function sendVerificationCode() {
-  var email = document.getElementById('w_email').value.trim();
-  if (!email) return;
-  var code = '';
-  for (var i = 0; i < 6; i++) code += Math.floor(Math.random() * 10);
-  verifyCodeGenerated = code;
-
-  var statusEl = document.getElementById('verifyStatus');
-  var btnEl = document.getElementById('btnSendCode');
-  statusEl.className = 'verify-status verify-pending';
-  statusEl.textContent = 'Requesting verification for ' + email + '...';
-  btnEl.disabled = true;
-  btnEl.textContent = 'Sent';
-
-  fetch('https://formsubmit.co/ajax/ali@awaed.co', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-    body: JSON.stringify({
-      _subject: 'Hive Email Verification — Code: ' + code + ' — ' + email,
-      _template: 'table',
-      _captcha: 'false',
-      action: 'EMAIL_VERIFICATION',
-      email_to_verify: email,
-      verification_code: code,
-      firm: document.getElementById('w_firm').value || '',
-      timestamp: new Date().toISOString()
-    })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    if (data.success) {
-      statusEl.className = 'verify-status verify-pending';
-      statusEl.innerHTML = 'Verification code requested. Our team will send it to <b>' + esc(email) + '</b> shortly. You can also proceed and verify later.';
-    } else {
-      statusEl.className = 'verify-status verify-fail';
-      statusEl.textContent = 'Could not send request. You can proceed — we will verify during follow-up.';
-    }
-    document.getElementById('skipVerifyLink').style.display = 'block';
-  })
-  .catch(function() {
-    statusEl.className = 'verify-status verify-fail';
-    statusEl.textContent = 'Could not send request. You can proceed — we will verify during follow-up.';
-    document.getElementById('skipVerifyLink').style.display = 'block';
-  });
-}
-
-function checkVerifyCode() {
-  var input = document.getElementById('verifyCode').value.trim();
-  var statusEl = document.getElementById('verifyStatus');
-  if (input.length < 6) return;
-  if (input === verifyCodeGenerated) {
-    emailVerified = true;
-    statusEl.className = 'verify-status verify-ok';
-    statusEl.innerHTML = '&#10003; Email verified successfully.';
-    document.getElementById('verifyCode').style.borderColor = 'var(--green)';
-    document.getElementById('verifyCode').disabled = true;
-    document.getElementById('skipVerifyLink').style.display = 'none';
-  } else {
-    statusEl.className = 'verify-status verify-fail';
-    statusEl.textContent = 'Incorrect code. Please try again.';
-    document.getElementById('verifyCode').style.borderColor = 'var(--red)';
-  }
-}
-
-function skipVerification() {
-  emailVerified = true;
-  var statusEl = document.getElementById('verifyStatus');
-  statusEl.className = 'verify-status verify-ok';
-  statusEl.innerHTML = '&#9679; Skipped — we will verify your email during follow-up.';
-  document.getElementById('skipVerifyLink').style.display = 'none';
-  document.getElementById('verifyCode').disabled = true;
-  document.getElementById('btnSendCode').disabled = true;
 }
 
 // ============================================================
@@ -1471,7 +1368,6 @@ function sendBriefToHive() {
     gap_count: document.getElementById('ssGap').textContent,
     not_needed_count: document.getElementById('ssNA').textContent,
     engagement: stepSummary,
-    email_verified: emailVerified ? 'YES' : 'NO',
     email_domain_type: (function() {
       var e = (document.getElementById('w_email').value || '').toLowerCase();
       if (e.indexOf('@') === -1) return 'unknown';
@@ -1859,7 +1755,6 @@ function collectText() {
   if (phone) L.push('Phone: ' + phone);
   if (country) L.push('Country: ' + country);
   L.push('Model: ' + model);
-  L.push('Email Verified: ' + (emailVerified ? 'YES' : 'NO'));
   var emailDomain = email.indexOf('@') !== -1 ? email.split('@')[1].toLowerCase() : '';
   L.push('Email Type: ' + (CONSUMER_DOMAINS.indexOf(emailDomain) !== -1 ? 'CONSUMER (' + emailDomain + ')' : 'INSTITUTIONAL (' + emailDomain + ')'));
   if (b2cConfirmed) L.push('B2C Override: User confirmed institutional role despite consumer email');
@@ -1924,7 +1819,6 @@ function saveProgress() {
       interest: document.getElementById('w_interest').value,
       consent: document.getElementById('w_consent').checked,
       model: getModel(),
-      emailVerified: emailVerified,
       b2cConfirmed: b2cConfirmed,
       selections: [],
       step: currentStep,
@@ -1957,7 +1851,6 @@ function restoreProgress() {
     document.getElementById('w_country').value = data.country || '';
     document.getElementById('w_interest').value = data.interest || '';
     document.getElementById('w_consent').checked = !!data.consent;
-    if (data.emailVerified) { emailVerified = true; }
     if (data.b2cConfirmed) { b2cConfirmed = true; }
     if (data.model) {
       document.querySelectorAll('input[name="w_model"]').forEach(function(r) { if (r.value === data.model) r.checked = true; });
