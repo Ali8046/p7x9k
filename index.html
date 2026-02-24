@@ -79,7 +79,6 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 @keyframes poweredGlow{0%,100%{border-color:rgba(39,174,96,.4);box-shadow:0 0 0 0 rgba(39,174,96,0)}50%{border-color:rgba(39,174,96,.8);box-shadow:0 0 20px rgba(39,174,96,.15)}}
 .hero-tagline{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:3px;margin-bottom:4px;position:relative;z-index:1}
 .hero-org{font-size:11px;color:rgba(255,255,255,.4);position:relative;z-index:1}
-.gold-rule{width:60px;height:2px;background:var(--gold);margin:16px auto;border:none;position:relative;z-index:1}
 .trust-bar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:10px 16px;margin:4px 0 16px;position:relative;z-index:1}
 .trust-badge{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.7);padding:3px 8px;border:1px solid rgba(255,255,255,.2);border-radius:3px;white-space:nowrap}
 .hero-metric-box{background:rgba(255,255,255,.04);color:#fff;border-radius:var(--radius);padding:20px 28px;margin:16px auto;max-width:560px;text-align:center;position:relative;z-index:1}
@@ -290,10 +289,15 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 .cap-row.auto-set .partner-select{background:#f5f5f5}
 .auto-tag{font-size:9px;font-weight:700;color:var(--info);text-transform:uppercase;letter-spacing:.3px;margin-left:6px}
 .proof-card{background:linear-gradient(135deg,#F0FFF4,#EBF5FB);border:2px solid var(--green);border-radius:var(--radius);padding:20px 24px;margin:20px auto;max-width:560px;text-align:center}
+.proof-card-accent{background:#FAFFFE;border:none;border-left:4px solid var(--green);text-align:left;max-width:680px}
 .proof-card .proof-quote{font-size:15px;font-style:italic;color:var(--dark);margin-bottom:8px;line-height:1.5}
 .proof-card .proof-attr{font-size:12px;color:var(--t2);font-weight:600}
 .proof-metric{display:inline-block;background:var(--green);color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin:0 3px}
-.pillar-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.pillar-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.pillar-card{background:#fff;border-radius:8px;padding:24px 18px;text-align:center;border-top:4px solid var(--green);box-shadow:0 2px 12px rgba(0,0,0,.07);transition:all .2s}
+.pillar-card:hover{box-shadow:0 6px 20px rgba(39,174,96,.12);transform:translateY(-2px)}
+.pillar-card .p-title{font-size:15px;font-weight:800;color:var(--dark);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.pillar-card .p-desc{font-size:13px;color:var(--t2);line-height:1.5}
 .b2c-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);justify-content:center;align-items:center}
 .b2c-modal.active{display:flex}
 .b2c-box{background:#fff;border-radius:12px;max-width:480px;width:90%;padding:32px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
@@ -403,36 +407,36 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
     <h3>Let&rsquo;s configure your partnership</h3>
     <p class="wc-sub">Takes about 5 minutes. You&rsquo;ll get a personalized fit assessment.</p>
     <div class="form-row">
-      <label>Partner Firm</label>
+      <label for="w_firm">Partner Firm</label>
       <input type="text" id="w_firm" placeholder="Your firm name" maxlength="120" autocomplete="organization">
     </div>
     <div class="form-row">
-      <label>Your Name</label>
+      <label for="w_name">Your Name</label>
       <input type="text" id="w_name" placeholder="Full name" maxlength="80" autocomplete="name">
     </div>
     <div class="form-row">
-      <label>Business Email <span style="color:var(--red)">*</span></label>
+      <label for="w_email">Business Email <span style="color:var(--red)">*</span></label>
       <input type="email" id="w_email" placeholder="you@company.com" maxlength="120" autocomplete="email" required onblur="checkEmailDomain()">
       <div id="emailDomainWarn" style="display:none;font-size:11px;color:var(--warn);margin-top:4px;padding:6px 10px;background:#FFF8E7;border-radius:4px"></div>
       <div id="emailVerifyArea" style="display:none;margin-top:8px">
-        <div style="font-size:12px;color:var(--t2);margin-bottom:6px">Enter the 6-digit code sent to your email:</div>
+        <label for="verifyCode" style="font-size:12px;color:var(--t2);margin-bottom:6px;display:block">Enter the 6-digit code sent to your email:</label>
         <div class="email-verify-row">
-          <input type="text" id="verifyCode" maxlength="6" placeholder="------" oninput="checkVerifyCode()">
+          <input type="text" id="verifyCode" maxlength="6" placeholder="------" oninput="checkVerifyCode()" aria-label="Verification code">
           <button class="btn-outline btn-sm" id="btnSendCode" onclick="sendVerificationCode()">Send Code</button>
         </div>
         <div class="verify-status" id="verifyStatus"></div>
       </div>
     </div>
     <div class="form-row">
-      <label>Phone (with country code)</label>
+      <label for="w_phone">Phone (with country code)</label>
       <input type="tel" id="w_phone" placeholder="+966 5x xxx xxxx" maxlength="20" autocomplete="tel">
     </div>
     <div class="form-row">
-      <label>Title / Role</label>
+      <label for="w_title">Title / Role</label>
       <input type="text" id="w_title" placeholder="e.g., CEO, CTO, Head of Product" maxlength="80" autocomplete="organization-title">
     </div>
     <div class="form-row">
-      <label>Country</label>
+      <label for="w_country">Country</label>
       <select id="w_country">
         <option value="">Select country</option>
         <optgroup label="GCC">
@@ -475,7 +479,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
       </div>
     </div>
     <div class="form-row">
-      <label>Primary Interest</label>
+      <label for="w_interest">Primary Interest</label>
       <select id="w_interest">
         <option value="Full Brokerage">Full Brokerage Platform</option>
         <option value="Trading Only">Trading API Only</option>
@@ -493,24 +497,29 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
     </div>
   </div>
 
-  <div class="pillar-grid" style="margin:24px auto 0;max-width:600px">
-    <div style="background:var(--bg);border-radius:var(--radius);padding:16px 14px;text-align:center">
-      <div style="font-size:13px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Your Brand</div>
-      <div style="font-size:12px;color:var(--t2)">Your clients never see Hive</div>
+  <div style="max-width:680px;margin:28px auto 0">
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--green)">Why Partners Choose Hive</div>
     </div>
-    <div style="background:var(--bg);border-radius:var(--radius);padding:16px 14px;text-align:center">
-      <div style="font-size:13px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Independent Rails</div>
-      <div style="font-size:12px;color:var(--t2)">Separate from Awaed&rsquo;s operations</div>
-    </div>
-    <div style="background:var(--bg);border-radius:var(--radius);padding:16px 14px;text-align:center">
-      <div style="font-size:13px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Your Control</div>
-      <div style="font-size:12px;color:var(--t2)">Build on our IP, own your destiny</div>
+    <div class="pillar-grid">
+      <div class="pillar-card">
+        <div class="p-title">Your Brand</div>
+        <div class="p-desc">White-label everything. Your clients never see Hive &mdash; they see <b>you</b>.</div>
+      </div>
+      <div class="pillar-card" style="border-top-color:var(--cobalt)">
+        <div class="p-title">Independent Rails</div>
+        <div class="p-desc">Your operations run on <b>completely separate infrastructure</b> from Awaed and every other partner.</div>
+      </div>
+      <div class="pillar-card" style="border-top-color:var(--navy)">
+        <div class="p-title">Your Control</div>
+        <div class="p-desc">Build on our IP without losing anything. <b>You own</b> the product, data, and client relationship.</div>
+      </div>
     </div>
   </div>
 
-  <div class="proof-card" style="max-width:600px;margin:16px auto 0;border-color:var(--green);border-width:1px;border-left-width:3px">
-    <div class="proof-quote" style="font-size:14px">&ldquo;Awaed Capital runs on the Hive engine &mdash; on <b>completely independent infrastructure</b>. Every partner gets their own isolated rails, their own brand, their own control. You build on our IP without losing anything.&rdquo;</div>
-    <div class="proof-attr" style="margin-top:6px">Awaed &mdash; fastest-growing broker in the region &middot; <span class="proof-metric">NYSE &amp; NASDAQ</span> <span class="proof-metric">Options</span> <span class="proof-metric">Shariah Suite</span> <span class="proof-metric">FPSL</span></div>
+  <div class="proof-card proof-card-accent" style="margin:20px auto 0">
+    <div class="proof-quote" style="font-size:14px;font-style:italic">&ldquo;Awaed Capital &mdash; the fastest-growing broker in the region &mdash; runs on the Hive engine. Full Shariah compliance, US equities, options, and FPSL &mdash; all live from day one.&rdquo;</div>
+    <div class="proof-attr" style="margin-top:8px"><span class="proof-metric">Live Production</span> <span class="proof-metric">NYSE &amp; NASDAQ</span> <span class="proof-metric">Options</span> <span class="proof-metric">Shariah Suite</span> <span class="proof-metric">FPSL</span></div>
   </div>
 </section>
 
@@ -873,7 +882,7 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
 
   <div class="proof-card" style="max-width:100%">
     <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:8px">Live Case Study</div>
-    <div class="proof-quote">&ldquo;Awaed Capital launched on the Hive engine and became the fastest-growing broker in the GCC. Full Shariah compliance, US equities, options, and FPSL — all live from day one.&rdquo;</div>
+    <div class="proof-quote">&ldquo;Awaed Capital launched on the Hive engine and became the fastest-growing broker in the GCC. Full Shariah compliance, US equities, options, and FPSL &mdash; all live from day one.&rdquo;</div>
     <div class="proof-attr" style="margin-top:8px"><span class="proof-metric">Live Production</span> <span class="proof-metric">Shariah-Compliant</span> <span class="proof-metric">Independent Rails</span> <span class="proof-metric">Full Stack</span></div>
   </div>
 
