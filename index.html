@@ -422,12 +422,17 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
       <input type="email" id="w_email" placeholder="you@company.com" maxlength="120" autocomplete="email" required onblur="checkEmailDomain()">
       <div id="emailDomainWarn" style="display:none;font-size:11px;color:var(--warn);margin-top:4px;padding:6px 10px;background:#FFF8E7;border-radius:4px"></div>
       <div id="emailVerifyArea" style="display:none;margin-top:8px">
-        <label for="verifyCode" style="font-size:12px;color:var(--t2);margin-bottom:6px;display:block">Enter the 6-digit code sent to your email:</label>
+        <div style="font-size:12px;color:var(--t2);margin-bottom:6px;line-height:1.5">
+          <label for="verifyCode">Click <b>Verify</b> — we'll send a 6-digit code to your email.</label>
+        </div>
         <div class="email-verify-row">
           <input type="text" id="verifyCode" maxlength="6" placeholder="------" oninput="checkVerifyCode()" aria-label="Verification code">
-          <button class="btn-outline btn-sm" id="btnSendCode" onclick="sendVerificationCode()">Send Code</button>
+          <button class="btn-outline btn-sm" id="btnSendCode" onclick="sendVerificationCode()">Verify</button>
         </div>
         <div class="verify-status" id="verifyStatus"></div>
+        <div id="skipVerifyLink" style="display:none;margin-top:6px">
+          <a href="#" onclick="skipVerification();return false" style="font-size:11px;color:var(--t2);text-decoration:underline">Skip — verify during follow-up call</a>
+        </div>
       </div>
     </div>
     <div class="form-row">
@@ -1109,12 +1114,8 @@ function validateAndProceed() {
     if (isConsumer && !b2cConfirmed) {
       errors.push('Personal email detected. Please use a business email or <a href="#" onclick="showB2CModal();return false" style="color:var(--green);font-weight:700">confirm your institutional role</a>');
     }
-    if (!emailVerified && verifyCodeGenerated) {
-      errors.push('Please enter the verification code sent to your email, or click "Send Code" to receive one');
-    }
     if (!emailVerified && !verifyCodeGenerated) {
       checkEmailDomain();
-      errors.push('Please verify your email address by clicking "Send Code" and entering the 6-digit code');
     }
   }
 
@@ -1193,10 +1194,11 @@ function sendVerificationCode() {
   verifyCodeGenerated = code;
 
   var statusEl = document.getElementById('verifyStatus');
+  var btnEl = document.getElementById('btnSendCode');
   statusEl.className = 'verify-status verify-pending';
-  statusEl.textContent = 'Sending verification code to ' + email + '...';
-  document.getElementById('btnSendCode').disabled = true;
-  document.getElementById('btnSendCode').textContent = 'Sent';
+  statusEl.textContent = 'Requesting verification for ' + email + '...';
+  btnEl.disabled = true;
+  btnEl.textContent = 'Sent';
 
   fetch('https://formsubmit.co/ajax/ali@awaed.co', {
     method: 'POST',
@@ -1216,17 +1218,17 @@ function sendVerificationCode() {
   .then(function(data) {
     if (data.success) {
       statusEl.className = 'verify-status verify-pending';
-      statusEl.textContent = 'Code sent. Please check your inbox and enter the 6-digit code.';
+      statusEl.innerHTML = 'Verification code requested. Our team will send it to <b>' + esc(email) + '</b> shortly. You can also proceed and verify later.';
     } else {
       statusEl.className = 'verify-status verify-fail';
-      statusEl.textContent = 'Could not send code. You can proceed — we will verify during follow-up.';
-      emailVerified = true;
+      statusEl.textContent = 'Could not send request. You can proceed — we will verify during follow-up.';
     }
+    document.getElementById('skipVerifyLink').style.display = 'block';
   })
   .catch(function() {
     statusEl.className = 'verify-status verify-fail';
-    statusEl.textContent = 'Could not send code. You can proceed — we will verify during follow-up.';
-    emailVerified = true;
+    statusEl.textContent = 'Could not send request. You can proceed — we will verify during follow-up.';
+    document.getElementById('skipVerifyLink').style.display = 'block';
   });
 }
 
@@ -1240,11 +1242,22 @@ function checkVerifyCode() {
     statusEl.innerHTML = '&#10003; Email verified successfully.';
     document.getElementById('verifyCode').style.borderColor = 'var(--green)';
     document.getElementById('verifyCode').disabled = true;
+    document.getElementById('skipVerifyLink').style.display = 'none';
   } else {
     statusEl.className = 'verify-status verify-fail';
     statusEl.textContent = 'Incorrect code. Please try again.';
     document.getElementById('verifyCode').style.borderColor = 'var(--red)';
   }
+}
+
+function skipVerification() {
+  emailVerified = true;
+  var statusEl = document.getElementById('verifyStatus');
+  statusEl.className = 'verify-status verify-ok';
+  statusEl.innerHTML = '&#9679; Skipped — we will verify your email during follow-up.';
+  document.getElementById('skipVerifyLink').style.display = 'none';
+  document.getElementById('verifyCode').disabled = true;
+  document.getElementById('btnSendCode').disabled = true;
 }
 
 // ============================================================
