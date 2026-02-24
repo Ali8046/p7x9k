@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; form-action 'none'; frame-ancestors 'none'; base-uri 'none';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="no-referrer">
+<link rel="canonical" href="https://ali8046.github.io/hive-partner/">
 <title>Hive — Partner Configurator | Powered by Awaed</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><polygon points='16,4 22,8 22,16 16,20 10,16 10,8' fill='%2327AE60'/><polygon points='16,0 19,2 19,6 16,8 13,6 13,2' fill='%23273979'/><polygon points='22,3 25,5 25,9 22,11 19,9 19,5' fill='%232C3E50'/><polygon points='22,11 25,13 25,17 22,19 19,17 19,13' fill='%23273979'/><polygon points='16,14 19,16 19,20 16,22 13,20 13,16' fill='%232C3E50'/><polygon points='10,11 13,13 13,17 10,19 7,17 7,13' fill='%23273979'/><polygon points='10,3 13,5 13,9 10,11 7,9 7,5' fill='%232C3E50'/></svg>">
 <style>
@@ -357,15 +361,15 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
     <p class="wc-sub">Takes about 5 minutes. You&rsquo;ll get a personalized fit assessment.</p>
     <div class="form-row">
       <label>Partner Firm</label>
-      <input type="text" id="w_firm" placeholder="Your firm name">
+      <input type="text" id="w_firm" placeholder="Your firm name" maxlength="120" autocomplete="organization">
     </div>
     <div class="form-row">
       <label>Your Name</label>
-      <input type="text" id="w_name" placeholder="Full name">
+      <input type="text" id="w_name" placeholder="Full name" maxlength="80" autocomplete="name">
     </div>
     <div class="form-row">
       <label>Title / Role</label>
-      <input type="text" id="w_title" placeholder="e.g., CEO, CTO, Head of Product">
+      <input type="text" id="w_title" placeholder="e.g., CEO, CTO, Head of Product" maxlength="80" autocomplete="organization-title">
     </div>
     <div class="form-row">
       <label>Country</label>
@@ -742,8 +746,11 @@ body{font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;font-size
     <p style="margin-top:8px"><a href="https://awaed.capital">awaed.capital</a> &middot; <a href="mailto:hive@awaed.capital">hive@awaed.capital</a></p>
   </div>
 
-  <div class="doc-footer">
-    <span id="docId"></span> &middot; Confidential &mdash; Hive &middot; Powered by Awaed &middot; <span id="docTs"></span>
+  <div class="doc-footer" style="text-align:center;padding:16px 0 8px">
+    <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:4px">&#9670; Verified Hive Document</div>
+    <div style="font-size:10px;color:var(--t2)">Authentic URL: <a href="https://ali8046.github.io/hive-partner/" style="color:var(--green);text-decoration:none;font-weight:600">ali8046.github.io/hive-partner</a></div>
+    <div style="font-size:10px;color:var(--t2);margin-top:2px">If you received this from a different URL, it may be fraudulent. Contact <a href="mailto:hive@awaed.capital" style="color:var(--green);text-decoration:none">hive@awaed.capital</a> to verify.</div>
+    <div style="font-size:9px;color:#bbb;margin-top:6px"><span id="docId"></span> &middot; Confidential &mdash; Hive &middot; Powered by Awaed &middot; <span id="docTs"></span></div>
   </div>
 
   <div class="btn-row" style="justify-content:center;margin-top:16px">
@@ -1090,14 +1097,20 @@ function updateContextBanner() {
 // ============================================================
 // 8. SUMMARY GENERATION (STEP 5)
 // ============================================================
+function esc(s) {
+  var d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
 function generateSummary() {
-  var firm = document.getElementById('w_firm').value || 'Partner';
-  var name = document.getElementById('w_name').value || '';
-  var title = document.getElementById('w_title').value || '';
-  var country = document.getElementById('w_country').value || '';
+  var firm = esc(document.getElementById('w_firm').value || 'Partner');
+  var name = esc(document.getElementById('w_name').value || '');
+  var title = esc(document.getElementById('w_title').value || '');
+  var country = esc(document.getElementById('w_country').value || '');
   var model = '';
-  document.querySelectorAll('input[name="w_model"]').forEach(function(r) { if (r.checked) model = r.value; });
-  var interest = document.getElementById('w_interest').value || '';
+  document.querySelectorAll('input[name="w_model"]').forEach(function(r) { if (r.checked) model = esc(r.value); });
+  var interest = esc(document.getElementById('w_interest').value || '');
 
   var ready = 0, prog = 0, gap = 0, na = 0;
   var readyList = [], progList = [], gapList = [];
